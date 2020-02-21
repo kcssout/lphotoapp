@@ -6,13 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:id="@+id/ll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <view class="re"
+            android:id="@+id/rc_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+        </view>
+
+        <Button
+            android:id="@+id/btnphoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이미지"/>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
