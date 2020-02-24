@@ -54,7 +54,7 @@ public class DbOpenHelper {
         cv.put("CONTENT", content);
         cv.put("EMAIL", email);
 
-        mDB.insert(DataBases.CreateDB._CREATE, null, cv);
+        mDB.insert("Memo", null, cv);
     }
 
     public void close(){

@@ -9,7 +9,7 @@ public final class DataBases {
         public static final String TITLE = "title";
         public static final String CONTENT = "content";
         public static final String PHOTO = "photo";
-        public static final String _TABLENAME = "address";
+        public static final String _TABLENAME = "Memo";
         public static final String _CREATE =
                 "create table "+_TABLENAME+"("
                         +_ID+" integer primary key autoincrement, "
