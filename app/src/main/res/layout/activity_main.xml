@@ -6,25 +6,25 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/ll_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <view class="re"
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="wrap_content">
 
-        </view>
+        </androidx.recyclerview.widget.RecyclerView>
 
         <Button
             android:id="@+id/btnphoto"
+            android:layout_below="@+id/rc_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="이미지"/>
-    </LinearLayout>
+            android:text="메모하기"/>
+    </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,11 +5,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 import com.example.myphotoapp.RecyclerView.RecyclerAdapter;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
         rc_view.setLayoutManager(new LinearLayoutManager(this));
         RecyclerAdapter recyclerAdapter = new RecyclerAdapter();
         rc_view.setAdapter(recyclerAdapter);
+
+        btnphoto.setOnClickListener(this);
 
     }
 
@@ -38,5 +41,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.btnphoto){
+
+        }
     }
 }
