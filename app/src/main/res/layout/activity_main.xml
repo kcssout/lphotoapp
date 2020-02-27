@@ -15,16 +15,31 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rc_view"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="400dp">
 
         </androidx.recyclerview.widget.RecyclerView>
 
-        <Button
-            android:id="@+id/btnphoto"
+        <LinearLayout
             android:layout_below="@+id/rc_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="메모하기"/>
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btnphoto"
+                android:layout_below="@+id/rc_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="메모하기"/>
+
+            <Button
+                android:id="@+id/btn_read"
+                android:layout_toRightOf="@+id/btnphoto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="불러오기"/>
+
+        </LinearLayout>
+
     </RelativeLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
