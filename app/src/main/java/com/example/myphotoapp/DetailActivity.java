@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,11 +27,13 @@ import com.example.myphotoapp.DB.DbOpenHelper;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener, ActivityDataListener {
     private static String TAG = DetailActivity.class.getSimpleName();
     private static final int PICK_FROM_ALBUM = 0;
+    private static final int DetailUserData = 001;
     EditText et1, et2;
     Button btn_confirm, btn_phview;
     ImageView img_view;
@@ -42,13 +45,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private Bitmap mBitmap;
     private Drawable dImage;
     private MainActivity mMainActivity;
+    private ArrayList<User> mUserlist;
+    private DataManager dataManager = DataManager.getInstance();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_detail);
         mContext = getApplicationContext();
-
         dbopen = new DbOpenHelper(mContext);
         dbopen.open();
 
@@ -119,13 +123,20 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.btn_confirm:
                 Log.d(TAG, "btn_confirm");
-
+                mUserlist= new ArrayList<>();
                 if (title != null && content != null) {
                     dbopen.insert(title, content, getByteArrayFromDrawable(dImage));
-                    dbopen.close();
 
+//                    Intent inserdb = new Intent(this, MainActivity.class);
+//                    mUserlist = dbopen.read();
+//                    inserdb.putExtra("userlist", mUserlist);
+//                    startActivityForResult(inserdb,DetailUserData);
+
+                    dbopen.close();
 //                    ((MainActivity)getParent()).cycleList(getApplicationContext());
                     MainActivity.instance.cycleList(mContext);
+//                    MainActivity.instance=null;
+
                 } else {
                     Toast.makeText(this, "데이터가 비어있습니다.", Toast.LENGTH_LONG).show();
                 }
@@ -196,6 +207,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         } else {
             return data;
         }
+
+    }
+
+    @Override
+    public void onActivityMessageReceived(int actionCode, Bundle data) {
 
     }
 }

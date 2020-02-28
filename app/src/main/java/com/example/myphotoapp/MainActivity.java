@@ -1,5 +1,6 @@
 package com.example.myphotoapp;
 
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,7 @@ import com.example.myphotoapp.RecyclerView.RecyclerAdapter;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ActivityDataListener {
 
     private static String TAG = MainActivity.class.getSimpleName();
     public RecyclerView rc_view;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Button btnphoto = findViewById(R.id.btnphoto);
         Button btn_read = findViewById(R.id.btn_read);
+        instance = this;
         mUserlist = new ArrayList<>();
 
         rc_view = findViewById(R.id.rc_view);
@@ -108,18 +110,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    public void cycleList(Context mCon){
-        Log.d(TAG, "----cycleList");
+    public void cycleList(Context mCon) {
+        Log.d(TAG, "--cycleList--");
         DbOpenHelper dbopen = new DbOpenHelper(mCon);
         dbopen.open();
         mUserlist = dbopen.read();
         dbopen.close();
-//                recyclerAdapter.users = mUserlist;
-
-        if(recyclerAdapter == null){
-            Log.d(TAG, ">>>>>>>>>>>>>>>>>>>>>>>>>>");
-        }
         recyclerAdapter.setItem(mUserlist);
         recyclerAdapter.notifyDataSetChanged();
+    }
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        Log.d(TAG, "request : "+ requestCode + " / intent : "+ data.toString());
+//        switch (requestCode) {
+//            case 001:
+//
+//                ArrayList<User> list = (ArrayList<User>) data.getSerializableExtra("userlist");
+//
+//                recyclerAdapter.setItem(list);
+//                recyclerAdapter.notifyDataSetChanged();
+//                break;
+//            default:
+//                break;
+//
+//
+//        }
+//    }
+
+    @Override
+    public void onActivityMessageReceived(int actionCode, Bundle data) {
+
     }
 }

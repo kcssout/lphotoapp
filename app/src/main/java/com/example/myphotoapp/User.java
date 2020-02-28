@@ -1,8 +1,9 @@
 package com.example.myphotoapp;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class User {
+public class User implements Serializable {
     String title;
     String artist;
     byte[] img;
