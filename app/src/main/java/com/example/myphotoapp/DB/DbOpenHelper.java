@@ -75,6 +75,15 @@ public class DbOpenHelper {
         Log.d(TAG, "insert 완료");
     }
 
+    public void delete(String idx){
+        mDB = mDBHelper.getWritableDatabase();
+        mDB.beginTransaction();
+        mDB.execSQL("DELETE FROM Memo WHERE _ID='" + idx + "';");
+        mDB.endTransaction();
+        mDB.close();
+        Log.d(TAG, "delete 완료");
+    }
+
     public ArrayList<User> read(){
         mDB = mDBHelper.getReadableDatabase();
         String sql = "Select * from Memo;";

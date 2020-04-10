@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.myphotoapp.DB.DbOpenHelper;
+import com.example.myphotoapp.DogView.SubActivity;
 import com.example.myphotoapp.RecyclerView.RecyclerAdapter;
 
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         Button btnphoto = findViewById(R.id.btnphoto);
         Button btn_read = findViewById(R.id.btn_read);
+        Button btn_dog = findViewById(R.id.btn_dog);
         instance = this;
         mUserlist = new ArrayList<>();
 
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         btnphoto.setOnClickListener(this);
         btn_read.setOnClickListener(this);
+        btn_dog.setOnClickListener(this);
 
 
     }
@@ -102,6 +105,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_read:
                 cycleList(this);
+                break;
+            case R.id.btn_dog:
+                Intent goSub = new Intent(this, SubActivity.class);
+                startActivity(goSub);
                 break;
             default:
                 break;

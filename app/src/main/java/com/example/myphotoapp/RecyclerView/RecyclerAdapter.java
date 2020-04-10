@@ -1,6 +1,9 @@
 package com.example.myphotoapp.RecyclerView;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +22,7 @@ import java.util.ArrayList;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RcViewHolder> {
 
+    private static String TAG = "RecyclerAdapter";
     RcViewHolder viewHolder;
     DbOpenHelper dbopen;
     public Context mContext;
@@ -41,12 +45,32 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RcView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RcViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RcViewHolder holder, final int position) {
+
+        holder.img.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Log.d(TAG, "pos : "+ position);
+                dbopen = new DbOpenHelper(mContext);
+                dbopen.open();
+                dbopen.delete(Integer.toString(position+1));
+                dbopen.close();
+                notifyDataSetChanged();
+                return false;
+            }
+        });
 
 
-        holder.textArtist.setText(users.get(position).getArtist());
-        holder.textTitle.setText(users.get(position).getTitle());
-//        holder.img.setImageBitmap();
+        try{
+            holder.textArtist.setText(users.get(position).getArtist());
+            holder.textTitle.setText(users.get(position).getTitle());
+            byte[] blob = users.get(position).getImg();
+            Bitmap bmp= BitmapFactory.decodeByteArray(blob,0,blob.length);
+            holder.img.setImageBitmap(bmp);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -66,8 +90,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RcView
 
         return userlist;
     }
-
-
 
     public class RcViewHolder extends RecyclerView.ViewHolder {
         public ImageView img;

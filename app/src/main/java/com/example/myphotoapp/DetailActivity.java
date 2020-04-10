@@ -123,9 +123,13 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 break;
             case R.id.btn_confirm:
                 Log.d(TAG, "btn_confirm");
-                mUserlist= new ArrayList<>();
+                mUserlist = new ArrayList<>();
                 if (title != null && content != null) {
-                    dbopen.insert(title, content, getByteArrayFromDrawable(dImage));
+                    if(dImage == null){
+                        dbopen.insert(title, content, null);
+                    }else{
+                        dbopen.insert(title, content, getByteArrayFromDrawable(dImage));
+                    }
 
 //                    Intent inserdb = new Intent(this, MainActivity.class);
 //                    mUserlist = dbopen.read();
@@ -209,6 +213,25 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         }
 
     }
+
+//    private byte[] getBlob(String image) {
+//        ByteArrayBuffer baf = new ByteArrayBuffer(500);
+//        try {
+//            String FILE_PATH1 = "sdcard/"
+//            File file = new File(FILE_PATH1, image + ".jpg");
+//            InputStream is = new FileInputStream(file);
+//            BufferedInputStream bis = new BufferedInputStream(is);
+//            int current = 0;
+//            while ((current = bis.read()) != -1) {
+//                baf.append((byte) current);
+//            }
+//            return baf.toByteArray();
+//        } catch (Exception e) {
+//            Log.d("ImageManager", "Error: " + e.toString());
+//        }
+//        return baf.toByteArray();
+//    }
+
 
     @Override
     public void onActivityMessageReceived(int actionCode, Bundle data) {
