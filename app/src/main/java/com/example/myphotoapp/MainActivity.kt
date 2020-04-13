@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import androidx.appcompat.widget.Toolbar
 
 import com.example.myphotoapp.DB.DbOpenHelper
 import com.example.myphotoapp.DogView.SubActivity
@@ -16,6 +20,7 @@ import com.example.myphotoapp.RecyclerView.RecyclerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 import java.util.ArrayList
+import java.util.concurrent.Executor
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -28,6 +33,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val btnphoto = findViewById<Button>(R.id.btnphoto)
         val btn_read = findViewById<Button>(R.id.btn_read)
         val btn_dog = findViewById<Button>(R.id.btn_dog)
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar!!
+        ab.setDisplayShowTitleEnabled(false)
+        ab.setDisplayHomeAsUpEnabled(true)
+
         instance = this
         mUserlist = ArrayList()
 
@@ -46,6 +58,25 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         btn_dog.setOnClickListener(this)
 
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id =  item.itemId
+
+        if(id == R.id.menu_action_search){
+            return true;
+        } else if(id== android.R.id.home){
+            finish();
+            return true;
+        } else{
+            return super.onOptionsItemSelected(item)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val inflater = menuInflater
+        inflater.inflate(R.menu.menu_search, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onResume() {
