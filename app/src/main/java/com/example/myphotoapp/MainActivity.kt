@@ -1,5 +1,6 @@
 package com.example.myphotoapp
 
+import android.Manifest
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.appcompat.app.AppCompatActivity
 
@@ -16,7 +17,9 @@ import androidx.appcompat.widget.Toolbar
 
 import com.example.myphotoapp.DB.DbOpenHelper
 import com.example.myphotoapp.DogView.SubActivity
+import com.example.myphotoapp.Logger.Logf
 import com.example.myphotoapp.RecyclerView.RecyclerAdapter
+import com.vistrav.ask.Ask
 import kotlinx.android.synthetic.main.activity_main.*
 
 import java.util.ArrayList
@@ -30,6 +33,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+
+
         val btnphoto = findViewById<Button>(R.id.btnphoto)
         val btn_read = findViewById<Button>(R.id.btn_read)
         val btn_dog = findViewById<Button>(R.id.btn_dog)
@@ -112,7 +118,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     fun cycleList(mCon: Context) {
-        Log.d(TAG, "--cycleList--")
+        Logf.v(TAG, "==cycleList")
         val dbopen = DbOpenHelper(mCon)
         dbopen.open()
         mUserlist = dbopen.read()

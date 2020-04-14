@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
 import com.example.myphotoapp.DB.DbOpenHelper
+import com.example.myphotoapp.Logger.Logf
 import com.example.myphotoapp.R
 import com.example.myphotoapp.User
 
@@ -36,7 +37,7 @@ class RecyclerAdapter(var mContext: Context) : RecyclerView.Adapter<RecyclerAdap
     override fun onBindViewHolder(holder: RcViewHolder, position: Int) {
 
         holder.img.setOnLongClickListener {
-            Log.d(TAG, "pos : $position")
+            Logf.v(TAG, "pos : $position")
             dbopen = DbOpenHelper(mContext)
             dbopen!!.open()
             dbopen!!.delete(Integer.toString(position + 1))

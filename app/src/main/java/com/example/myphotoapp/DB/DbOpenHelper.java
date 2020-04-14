@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.myphotoapp.Logger.Logf;
 import com.example.myphotoapp.User;
 
 import java.util.ArrayList;
@@ -71,7 +72,7 @@ public class DbOpenHelper {
 
         mDB.insert("Memo", null, cv);
 
-        Log.d(TAG, "insert 완료");
+        Logf.v(TAG, "insert 완료");
     }
 
     public void delete(String idx){
@@ -80,7 +81,7 @@ public class DbOpenHelper {
         mDB.execSQL("DELETE FROM Memo WHERE _ID='" + idx + "';");
         mDB.endTransaction();
         mDB.close();
-        Log.d(TAG, "delete 완료");
+        Logf.v(TAG, "delete 완료");
     }
 
     public ArrayList<User> read(){
@@ -96,7 +97,7 @@ public class DbOpenHelper {
             String content = result.getString(2); //content
             byte[] image = result.getBlob(3); // byte
 //            Toast.makeText(mCtx, "index= "+index+" title="+title+" content="+content, Toast.LENGTH_LONG).show();
-            Log.d(TAG, "index= "+index+" title="+title+" content="+content);
+            Logf.v(TAG, "index= "+index+" title="+title+" content="+content);
             mUser = new User(title, content, image);
             userlist.add(mUser);
             result.moveToNext();

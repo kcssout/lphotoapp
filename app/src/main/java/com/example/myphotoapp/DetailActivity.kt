@@ -18,6 +18,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
 import com.example.myphotoapp.DB.DbOpenHelper
+import com.example.myphotoapp.Logger.Logf
 import kotlinx.android.synthetic.main.edit_detail.*
 
 import java.io.ByteArrayOutputStream
@@ -65,7 +66,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun afterTextChanged(editable: Editable) {
-                Log.d(TAG, editable.toString())
+                Logf.v(TAG, editable.toString())
                 title = editable.toString()
             }
         })
@@ -79,7 +80,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun afterTextChanged(editable: Editable) {
-                Log.d(TAG, editable.toString())
+                Logf.v(TAG, editable.toString())
                 content = editable.toString()
             }
         })
@@ -88,12 +89,12 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
         when (view.id) {
-            R.id.etview1 -> Log.d(TAG, "etview1")
+            R.id.etview1 -> Logf.v(TAG, "etview1")
 
-            R.id.etview2 -> Log.d(TAG, "etview2")
+            R.id.etview2 -> Logf.v(TAG, "etview2")
             R.id.btn_phview -> takeAlbum()
             R.id.btn_confirm -> {
-                Log.d(TAG, "btn_confirm")
+                Logf.v(TAG, "btn_confirm")
                 mUserlist = ArrayList()
                 if (title != null && content != null) {
                     if (dImage == null) {
@@ -116,13 +117,13 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                     Toast.makeText(this, "데이터가 비어있습니다.", Toast.LENGTH_LONG).show()
                 }
             }
-            R.id.img_view -> Log.d(TAG, "img_view")
-            else -> Log.d(TAG, "default")
+            R.id.img_view -> Logf.v(TAG, "img_view")
+            else -> Logf.v(TAG, "default")
         }//                MainActivity.getInstance().recyclerAdapter.notifyDataSetChanged();
     }
 
     fun takeAlbum() {
-        Log.d(TAG, "takeAlbum")
+        Logf.v(TAG, "takeAlbum")
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = MediaStore.Images.Media.CONTENT_TYPE
         startActivityForResult(intent, PICK_FROM_ALBUM)
@@ -136,10 +137,10 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
         when (requestCode) {
             PICK_FROM_ALBUM -> {
-                Log.d(TAG, "PICK_FROM_ALBUM")
+                Logf.v(TAG, "PICK_FROM_ALBUM")
 
                 val extras = data!!.data
-                Log.d(TAG, extras!!.toString())
+                Logf.v(TAG, extras!!.toString())
 
 
                 if (extras != null) {
