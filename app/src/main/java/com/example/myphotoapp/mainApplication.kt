@@ -3,57 +3,82 @@ package com.example.myphotoapp
 import android.Manifest
 import android.app.Activity
 import android.app.Application
+import android.content.Context
 import android.os.Bundle
 import com.example.myphotoapp.Logger.Logf
 import com.vistrav.ask.Ask
+import java.lang.ref.WeakReference
 
-class mainApplication : Application(){
+class mainApplication : Application() {
 
-    private val TAG = "mainApplication"
-    private val INT_ID_OF_YOUR_REQUEST = 100;
 
     override fun onCreate() {
         super.onCreate()
 
-        registerActivityLifecycleCallbacks(mCallbacks)
+        ActivityReference.initialize(this)
+
     }
 
-    private val mCallbacks = object : Application.ActivityLifecycleCallbacks{
-        override fun onActivityCreated(p0: Activity, p1: Bundle?) {
-            Logf.v(TAG, "onActivityCreated " + p0.localClassName)
 
-            Ask.on(p0)
-                    .id(INT_ID_OF_YOUR_REQUEST) // in case you are invoking multiple time Ask from same activity or fragment
-                    .forPermissions( Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .withRationales("Location permission need for map to work properly",
-                            "In order to save file you will need to grant storage permission") //optional
-                    .go()
+    object ActivityReference {
+
+        private val TAG = "mainApplication"
+        private val INT_ID_OF_YOUR_REQUEST = 100;
+        private var mTopActivityWeakRef: WeakReference<Activity>? = null
+        private var mApplicationWeakRef: WeakReference<Application>? = null
+
+        private val mCallbacks = object : Application.ActivityLifecycleCallbacks {
+            override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
+                Logf.v(TAG, "onActivityCreated "+ activity.localClassName)
+
+                setTopActivityWeakRef(activity)
+            }
+
+            override fun onActivityStarted(activity: Activity) {
+                Logf.v(TAG, "onActivityStarted "+ activity.localClassName)
+                setTopActivityWeakRef(activity)
+
+            }
+
+            override fun onActivityResumed(activity: Activity) {
+                Logf.v(TAG, "onActivityResumed "+ activity.localClassName)
+                setTopActivityWeakRef(activity)
+
+            }
+
+            override fun onActivityDestroyed(activity: Activity) {}
+            override fun onActivityPaused(activity: Activity) {}
+            override fun onActivityStopped(activity: Activity) {}
+            override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle?) {}
         }
 
-        override fun onActivityStarted(p0: Activity) {
-            Logf.v(TAG, "onActivityStarted " + p0.localClassName)
-        }
-
-        override fun onActivityResumed(p0: Activity) {
-            Logf.v(TAG, "onActivityResumed " + p0.localClassName)
-        }
-
-        override fun onActivityStopped(p0: Activity) {
-            Logf.v(TAG, "onActivityStopped " + p0.localClassName)
+        @JvmStatic
+        fun initialize(application: Application) {
+            mApplicationWeakRef = WeakReference(application)
+            application.registerActivityLifecycleCallbacks(mCallbacks)
 
         }
 
-        override fun onActivityPaused(p0: Activity) {
-            Logf.v(TAG, "onActivityPaused " + p0.localClassName)
+        private fun setTopActivityWeakRef(activity: Activity) {
+            if (mTopActivityWeakRef == null || activity != (mTopActivityWeakRef as WeakReference<Activity>).get()) {
+                mTopActivityWeakRef = WeakReference(activity)
+            }
         }
 
-        override fun onActivitySaveInstanceState(p0: Activity, p1: Bundle) {
-//            Logf.v(TAG, "Resumed")
+        @JvmStatic
+        fun getActivityReference(): Activity? {
+            if (mTopActivityWeakRef != null) {
+                val activity = (mTopActivityWeakRef as WeakReference<Activity>).get()
+                if (activity != null) {
+                    return activity
+                }
+            }
+
+            return null
         }
 
-        override fun onActivityDestroyed(p0: Activity) {
-//            Logf.v(TAG, "Resumed")
+        fun getContext(): Context {
+            return getActivityReference() ?: mApplicationWeakRef?.get() as Context
         }
-
     }
 }
