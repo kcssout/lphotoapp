@@ -91,8 +91,9 @@ class SubRvAdapter(val context: Context, val dogList: ArrayList<Dog>, private va
               return filterResults
           }
 
-          override fun publishResults(p0: CharSequence?, p1: FilterResults?) {
-              TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+          override fun publishResults(p0: CharSequence, p1: FilterResults) {
+              dogSearchList = p1.values as ArrayList<Dog>
+              notifyDataSetChanged()
           }
 
 
