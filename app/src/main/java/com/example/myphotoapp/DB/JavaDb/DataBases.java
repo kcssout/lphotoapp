@@ -1,4 +1,4 @@
-package com.example.myphotoapp.DB;
+package com.example.myphotoapp.DB.JavaDb;
 
 import android.provider.BaseColumns;
 

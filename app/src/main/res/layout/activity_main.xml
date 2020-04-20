@@ -14,24 +14,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/set_date"
-                android:text="검색"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:textColor="@android:color/white"/>
-        </androidx.appcompat.widget.Toolbar>
-
         <androidx.recyclerview.widget.RecyclerView
-            android:layout_below="@id/toolbar"
             android:id="@+id/rc_view"
             android:layout_width="match_parent"
             android:layout_height="400dp">

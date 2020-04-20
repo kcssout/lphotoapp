@@ -23,25 +23,25 @@ class mainApplication : Application() {
     object ActivityReference {
 
         private val TAG = "mainApplication"
-        private val INT_ID_OF_YOUR_REQUEST = 100;
         private var mTopActivityWeakRef: WeakReference<Activity>? = null
         private var mApplicationWeakRef: WeakReference<Application>? = null
 
         private val mCallbacks = object : Application.ActivityLifecycleCallbacks {
             override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
-                Logf.v(TAG, "onActivityCreated "+ activity.localClassName)
+                Logf.v(TAG, "onActivityCreated " + activity.localClassName)
 
                 setTopActivityWeakRef(activity)
             }
 
             override fun onActivityStarted(activity: Activity) {
-                Logf.v(TAG, "onActivityStarted "+ activity.localClassName)
-                setTopActivityWeakRef(activity)
+                Logf.v(TAG, "onActivityStarted " + activity.localClassName)
 
+                setTopActivityWeakRef(activity)
             }
 
             override fun onActivityResumed(activity: Activity) {
-                Logf.v(TAG, "onActivityResumed "+ activity.localClassName)
+                Logf.v(TAG, "onActivityResumed " + activity.localClassName)
+
                 setTopActivityWeakRef(activity)
 
             }

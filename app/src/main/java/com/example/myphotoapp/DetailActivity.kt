@@ -12,12 +12,12 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-import com.example.myphotoapp.DB.DbOpenHelper
+import com.example.myphotoapp.DB.JavaDb.DbOpenHelper
+import com.example.myphotoapp.DB.JavaDb.User
 import com.example.myphotoapp.Logger.Logf
 import kotlinx.android.synthetic.main.edit_detail.*
 

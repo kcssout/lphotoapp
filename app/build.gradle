@@ -33,6 +33,8 @@ dependencies {
     implementation "androidx.core:core-ktx:+"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
+    implementation "android.arch.persistence.room:runtime:1.1.1"
+
     implementation 'com.vistrav:ask:2.5'
 
 }

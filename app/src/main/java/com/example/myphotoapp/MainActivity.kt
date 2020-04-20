@@ -6,16 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
-import androidx.appcompat.widget.Toolbar
 
-import com.example.myphotoapp.DB.DbOpenHelper
+import com.example.myphotoapp.DB.JavaDb.DbOpenHelper
+import com.example.myphotoapp.DB.JavaDb.User
 import com.example.myphotoapp.DogView.SubActivity
 import com.example.myphotoapp.Logger.Logf
 import com.example.myphotoapp.RecyclerView.RecyclerAdapter
@@ -23,28 +21,29 @@ import com.vistrav.ask.Ask
 import kotlinx.android.synthetic.main.activity_main.*
 
 import java.util.ArrayList
-import java.util.concurrent.Executor
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private var mUserlist: ArrayList<User>? = null
     private var rcAdapter : RecyclerAdapter? = null
+    private val INT_ID_OF_YOUR_REQUEST = 100;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
 
+        Ask.on(this)
+                .id(INT_ID_OF_YOUR_REQUEST) // in case you are invoking multiple time Ask from same activity or fragment
+                .forPermissions(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .withRationales("In order to save file you will need to grant storage permission") //optional
+                .go();
 
         val btnphoto = findViewById<Button>(R.id.btnphoto)
         val btn_read = findViewById<Button>(R.id.btn_read)
         val btn_dog = findViewById<Button>(R.id.btn_dog)
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
 
-        setSupportActionBar(toolbar)
-        val ab = supportActionBar!!
-        ab.setDisplayShowTitleEnabled(false)
-        ab.setDisplayHomeAsUpEnabled(true)
+
 
         instance = this
         mUserlist = ArrayList()
