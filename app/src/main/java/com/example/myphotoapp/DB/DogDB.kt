@@ -1,10 +1,14 @@
 package com.example.myphotoapp.DB
 
 import android.content.Context
+import androidx.room.Database
+import androidx.room.Entity
 import androidx.room.Room
 import androidx.room.RoomDatabase
+
 import com.example.myphotoapp.DB.Dao.DogDao
 
+@Database(entities = [Dog::class], version = 1, exportSchema = false)
 abstract class DogDB: RoomDatabase(){
     abstract fun dogDao(): DogDao
 
@@ -17,6 +21,7 @@ abstract class DogDB: RoomDatabase(){
                     INSTANCE = Room.databaseBuilder(context.applicationContext,
                             DogDB::class.java, "dog.db")
                             .fallbackToDestructiveMigration()
+                            .allowMainThreadQueries()
                             .build()
                 }
             }

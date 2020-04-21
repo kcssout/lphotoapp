@@ -1,9 +1,11 @@
 package com.example.myphotoapp.DB.Dao
 
+import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.myphotoapp.DB.Dog
 
+@Dao
 interface DogDao {
 
     @Query("SELECT * FROM dog")

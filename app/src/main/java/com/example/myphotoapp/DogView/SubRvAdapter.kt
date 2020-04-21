@@ -12,15 +12,15 @@ class SubRvAdapter(val context: Context, val dogsList: MutableList<Dogs>, privat
     private var dogsSearchList: List<Dogs>? = null
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){    //holder 생성 itemclick 추가
-        val dogPhoto = itemView?.findViewById<ImageView>(R.id.dogPhotoImg)
-        val dogBreed = itemView?.findViewById<TextView>(R.id.dogBreedTv)
-        val dogAge = itemView?.findViewById<TextView>(R.id.dogAgeTv)
-        val dogGender = itemView?.findViewById<TextView>(R.id.dogGenderTv)
+        val dogPhoto = itemView!!.findViewById<ImageView>(R.id.dogPhotoImg)
+        val dogBreed = itemView!!.findViewById<TextView>(R.id.dogBreedTv)
+        val dogAge = itemView!!.findViewById<TextView>(R.id.dogAgeTv)
+        val dogGender = itemView!!.findViewById<TextView>(R.id.dogGenderTv)
 
 
         fun bind(dogs: Dogs, context: Context){
-            if(dogs.photo != ""){
-                val resourceId = context.resources.getIdentifier(dogs.photo, "drawable", context.packageName)
+            if(dogs.photo != null){
+                val resourceId = context.resources.getIdentifier(dogs.photo.toString(), "drawable", context.packageName)
                 dogPhoto?.setImageResource(resourceId)
             }
             else{
@@ -58,7 +58,7 @@ class SubRvAdapter(val context: Context, val dogsList: MutableList<Dogs>, privat
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder?.bind(this!!.dogsSearchList!![position], context)
+        holder!!.bind(this!!.dogsSearchList!![position], context)
     }
 
 
@@ -68,6 +68,11 @@ class SubRvAdapter(val context: Context, val dogsList: MutableList<Dogs>, privat
 
     }
 
+    fun setAddItem(dogs :Dogs ){
+        dogsList.add(dogs)
+        this.dogsSearchList= dogsList
+        notifyDataSetChanged()
+    }
 
     //필터를 위한 코드
     override fun getFilter() : Filter{
@@ -81,7 +86,7 @@ class SubRvAdapter(val context: Context, val dogsList: MutableList<Dogs>, privat
               }else{
                   val filteredList = ArrayList<Dogs>()
                   for (row in dogsList) {
-                      if (row.breed.toLowerCase().contains(charString.toLowerCase()) || row.gender.toLowerCase().contains(charString.toLowerCase())) {
+                      if (row.breed!!.toLowerCase().contains(charString.toLowerCase()) || row.gender!!.toLowerCase().contains(charString.toLowerCase())) {
                           filteredList.add(row)
                       }
                   }

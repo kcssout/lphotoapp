@@ -2,24 +2,29 @@ package com.example.myphotoapp.DogView
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myphotoapp.DB.Dog
 import com.example.myphotoapp.DB.DogDB
 import com.example.myphotoapp.R
+import com.example.myphotoapp.ViewModel.DogViewModel
 import kotlinx.android.synthetic.main.activity_sub.*
 import java.util.ArrayList
 
-class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener {
+class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener, ViewModelStoreOwner {
 
-    private var dogDb : DogDB? = null
 
     var dogList = arrayListOf<Dogs>(
             Dogs("Chow Chow", "Male", "4", null),
@@ -30,17 +35,16 @@ class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener {
             Dogs("Alaskan Malamute", "Male", "7", null),
             Dogs("Shih Tzu", "Female", "5", null)
     )
-    private var itemlist: MutableList<Dogs> = mutableListOf()
-    private var SearchView: SearchView? = null
-    private var mAdapter: SubRvAdapter? = null
+    var itemlist: MutableList<Dogs> = mutableListOf()
+    var SearchView: SearchView? = null
+    var mAdapter: SubRvAdapter? = null
+    private  var dogViewModel: DogViewModel? = null
 
+    private var viewModelFactory : ViewModelProvider.AndroidViewModelFactory? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sub)
-
-        dogDb = DogDB.getInstance(this)
-
         val toolbar = toolbar
         val addbtn = addbtn
 
@@ -50,10 +54,11 @@ class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener {
         ab.setDisplayShowTitleEnabled(false)
         ab.setDisplayHomeAsUpEnabled(true)
 
-        itemlist = dogList
-        mAdapter = SubRvAdapter(this,itemlist as ArrayList<Dogs>, this)
-        mRecyclerView.adapter = mAdapter            //mRecyclerView 아이디 가져아ㅗ서 연결
 
+
+        itemlist = dogList
+        mAdapter = SubRvAdapter(this, itemlist as ArrayList<Dogs>, this)
+        mRecyclerView.adapter = mAdapter            //mRecyclerView 아이디 가져와서 연결
 
 
         val lm = LinearLayoutManager(this)  //아래는 이전 recylcerview랑 같음
@@ -61,32 +66,25 @@ class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener {
         mRecyclerView.itemAnimator = DefaultItemAnimator()
         mRecyclerView.setHasFixedSize(true)
 
-        itemlist = dogList
-
-    }
-
-    fun insertNewDog(){
-        val addRunnable = Runnable {
-            val newDog = Dog()
-            newDog.age
-            newDog.breed
-            newDog.gender
-            newDog.photo
-            dogDb?.dogDao()?.insert(newDog)
+        addbtn.setOnClickListener {
+            val i = Intent(this, DogAddActivity::class.java)
+            startActivity(i)
 
         }
+
     }
+
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        val id =  item.itemId
+        val id = item.itemId
 
-        if(id == R.id.menu_action_search){
+        if (id == R.id.menu_action_search) {
             return true;
-        } else if(id== android.R.id.home){
+        } else if (id == android.R.id.home) {
             finish();
             return true;
-        } else{
+        } else {
             return super.onOptionsItemSelected(item)
         }
     }
@@ -100,7 +98,7 @@ class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener {
 
         SearchView!!.setSearchableInfo(searchManager.getSearchableInfo(componentName))
         SearchView!!.maxWidth = Integer.MAX_VALUE
-        SearchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+        SearchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 mAdapter!!.filter.filter(query)
                 return false
@@ -117,13 +115,24 @@ class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener {
 
 
     override fun onItemClicked(item: Dogs) {
-    Toast.makeText(this,"Dog > "+ item.breed, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Dog > " + item.breed, Toast.LENGTH_SHORT).show()
     }
 
 
     override fun onDestroy() {
         DogDB.destroyInsatance()
         super.onDestroy()
+    }
+
+
+    companion object{
+        private var instance : SubActivity? = null
+
+        @JvmStatic
+        fun getInstance() : SubActivity =
+                instance ?: synchronized(this){
+                    instance?: SubActivity().also { instance = it }
+                }
     }
 
 }

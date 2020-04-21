@@ -103,15 +103,9 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
                         dbopen!!.insert(title, content, getByteArrayFromDrawable(dImage))
                     }
 
-                    //                    Intent inserdb = new Intent(this, MainActivity.class);
-                    //                    mUserlist = dbopen.read();
-                    //                    inserdb.putExtra("userlist", mUserlist);
-                    //                    startActivityForResult(inserdb,DetailUserData);
 
                     dbopen!!.close()
-                    //                    ((MainActivity)getParent()).cycleList(getApplicationContext());
                     MainActivity.getInstance().cycleList(mContext!!)
-                    //                    MainActivity.instance=null;
 
                 } else {
                     Toast.makeText(this, "데이터가 비어있습니다.", Toast.LENGTH_LONG).show()
@@ -119,7 +113,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
             }
             R.id.img_view -> Logf.v(TAG, "img_view")
             else -> Logf.v(TAG, "default")
-        }//                MainActivity.getInstance().recyclerAdapter.notifyDataSetChanged();
+        }
     }
 
     fun takeAlbum() {

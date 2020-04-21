@@ -6,10 +6,10 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "dog")
 class Dog(@PrimaryKey(autoGenerate = true) var id: Long?,
-          @ColumnInfo(name = "breed") val breed: String?,
-          @ColumnInfo(name = "gender") val gender: String?,
-          @ColumnInfo(name = "age") val age: String?,
-          @ColumnInfo(name = "photo") val photo: ByteArray?
+          @ColumnInfo(name = "breed") var breed: String?,
+          @ColumnInfo(name = "gender") var gender: String?,
+          @ColumnInfo(name = "age") var age: String?,
+          @ColumnInfo(name = "photo") var photo: ByteArray?
     )
 {
     constructor(): this(null,null,null,null,null)
