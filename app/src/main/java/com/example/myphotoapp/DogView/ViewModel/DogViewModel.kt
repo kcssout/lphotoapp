@@ -1,16 +1,17 @@
-package com.example.myphotoapp.ViewModel
+package com.example.myphotoapp.DogView.ViewModel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import com.example.myphotoapp.DB.Dog
-import com.example.myphotoapp.Repository.dogRespository
+import com.example.myphotoapp.DB.Repository.dogRespository
 
 class DogViewModel(application : Application) : AndroidViewModel(application){
 
     private val respository = dogRespository(application)
     private val dogs = respository.getAll()
 
-    fun getAll() : List<Dog> {
+    fun getAll() : LiveData<List<Dog>> {
         return this.dogs
     }
 

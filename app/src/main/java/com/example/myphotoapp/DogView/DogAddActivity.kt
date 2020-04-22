@@ -3,17 +3,18 @@ package com.example.myphotoapp.DogView
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.ImageDecoder
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.myphotoapp.DB.Dog
 import com.example.myphotoapp.DB.DogDB
 import com.example.myphotoapp.Logger.Logf
 import com.example.myphotoapp.R
+import com.example.myphotoapp.DogView.ViewModel.DogViewModel
 import kotlinx.android.synthetic.main.add_detail_dog.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -21,14 +22,16 @@ import java.io.IOException
 
 class DogAddActivity : AppCompatActivity() {
 
+    private lateinit var dogViewModel: DogViewModel
 
     private var dogDb: DogDB? = null
-    private var dogPhoto : Drawable? = null
+    private var dogPhoto: Drawable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.add_detail_dog)
         dogDb = DogDB.getInstance(this)
+        dogViewModel = ViewModelProvider(this).get(DogViewModel::class.java)
 
 
         btn_phview.setOnClickListener {
@@ -42,27 +45,27 @@ class DogAddActivity : AppCompatActivity() {
 
 
     fun insertNewDog() {
-        val mHandler = Handler(Looper.getMainLooper())
+//        val mHandler = Handler(Looper.getMainLooper())
+////        val addRunnable = Runnable {
+////            val newDog = Dog()
+////            newDog.age = etDogAge.text.toString()
+////            newDog.breed= etDogName.text.toString()
+////            newDog.gender= etDogGender.text.toString()
+////            newDog.photo= getByteArrayFromDrawable(dogPhoto)
+////
+////            dogViewModel.insert(newDog)
+////            Logf.v(TAG, newDog.toString()
+////        }
+////        mHandler.postDelayed(addRunnable,0)
+        val newDog = Dog()
+        newDog.age = etDogAge.text.toString()
+        newDog.breed = etDogName.text.toString()
+        newDog.gender = etDogGender.text.toString()
+        newDog.photo = getByteArrayFromDrawable(dogPhoto)
 
-        val addRunnable = Runnable {
-            val newDog = Dog()
-            newDog.age = etDogAge.text.toString()
-            newDog.breed= etDogName.text.toString()
-            newDog.gender= etDogGender.text.toString()
-            newDog.photo= getByteArrayFromDrawable(dogPhoto)
-
-            var dogs = Dogs(newDog.age, newDog.gender, newDog.age, newDog.photo)
-//            SubActivity.getInstance().dogList.add(dogs)
-
-            SubActivity.getInstance().mAdapter!!.setAddItem(dogs)
-
-            dogDb?.dogDao()?.insert(newDog)
-
-            Logf.v(TAG, newDog.toString())
-
-
-        }
-        mHandler.postDelayed(addRunnable,0)
+        dogViewModel.insert(newDog)
+        Logf.v(TAG, newDog.toString())
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -78,12 +81,19 @@ class DogAddActivity : AppCompatActivity() {
                 val extras = data!!.data
                 Logf.v(TAG, extras!!.toString())
 
-
+                var bitmap: Bitmap? = null
                 if (extras != null) {
+
                     try {
-                        val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, extras)
+                        if (android.os.Build.VERSION.SDK_INT >= 29) {
+                            // To handle deprication use
+                            bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(contentResolver, extras))
+                        } else {
+                            // Use older version
+                            bitmap = MediaStore.Images.Media.getBitmap(contentResolver, extras)
+                        }
                         img_view.setImageBitmap(bitmap)
-                        dogPhoto = BitmapDrawable(bitmap)
+                        dogPhoto = BitmapDrawable(resources, bitmap)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -102,7 +112,6 @@ class DogAddActivity : AppCompatActivity() {
         intent.type = MediaStore.Images.Media.CONTENT_TYPE
         startActivityForResult(intent, DogAddActivity.PICK_FROM_ALBUM)
     }
-
 
 
     fun getByteArrayFromDrawable(d: Drawable?): ByteArray? {

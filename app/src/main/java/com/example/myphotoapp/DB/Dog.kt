@@ -10,7 +10,7 @@ class Dog(@PrimaryKey(autoGenerate = true) var id: Long?,
           @ColumnInfo(name = "gender") var gender: String?,
           @ColumnInfo(name = "age") var age: String?,
           @ColumnInfo(name = "photo") var photo: ByteArray?
-    )
-{
+
+){
     constructor(): this(null,null,null,null,null)
 }

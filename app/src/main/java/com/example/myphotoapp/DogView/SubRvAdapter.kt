@@ -1,29 +1,32 @@
 package com.example.myphotoapp.DogView
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myphotoapp.DB.Dog
 import com.example.myphotoapp.R
-class SubRvAdapter(val context: Context, val dogsList: MutableList<Dogs>, private val listener: ItemClickListener) : RecyclerView.Adapter<SubRvAdapter.Holder>(), Filterable {
 
-    private var dogsSearchList: List<Dogs>? = null
+class SubRvAdapter(val context: Context, var dogsList: MutableList<Dog>, val dogItemClick: (Dog) -> Unit, val dogItemLongClick: (Dog) -> Unit) : RecyclerView.Adapter<SubRvAdapter.Holder>(), Filterable {
 
-    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView){    //holder 생성 itemclick 추가
+    private var dogsSearchList: List<Dog>? = null
+
+    inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {    //holder 생성 itemclick 추가
         val dogPhoto = itemView!!.findViewById<ImageView>(R.id.dogPhotoImg)
         val dogBreed = itemView!!.findViewById<TextView>(R.id.dogBreedTv)
         val dogAge = itemView!!.findViewById<TextView>(R.id.dogAgeTv)
         val dogGender = itemView!!.findViewById<TextView>(R.id.dogGenderTv)
 
 
-        fun bind(dogs: Dogs, context: Context){
-            if(dogs.photo != null){
-                val resourceId = context.resources.getIdentifier(dogs.photo.toString(), "drawable", context.packageName)
-                dogPhoto?.setImageResource(resourceId)
-            }
-            else{
+        fun bind(dogs: Dog, context: Context) {
+            if (dogs.photo != null) {
+                var bitmap = BitmapFactory.decodeByteArray (dogs.photo, 0, dogs.photo!!.size )
+                dogPhoto?.setImageBitmap(bitmap)
+            } else {
                 dogPhoto?.setImageResource(R.mipmap.ic_launcher)
             }
 
@@ -33,12 +36,14 @@ class SubRvAdapter(val context: Context, val dogsList: MutableList<Dogs>, privat
             dogAge?.text = dogs.age
             dogGender?.text = dogs.gender
 
-
             itemView.setOnClickListener {
-//                view -> Toast.makeText(context,  "개의 품종은 ${dog.breed} 이며, 나이는 ${dog.age}세이다.", Toast.LENGTH_SHORT).show()
-
-                listener.onItemClicked(dogsSearchList!![adapterPosition])
+                dogItemClick(dogs)
             }
+            itemView.setOnLongClickListener {
+                dogItemLongClick(dogs)
+                true
+            }
+
         }
 
     }
@@ -49,7 +54,7 @@ class SubRvAdapter(val context: Context, val dogsList: MutableList<Dogs>, privat
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val view = LayoutInflater.from(context).inflate(R.layout.sub_rv_item,parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.sub_rv_item, parent, false)
         return Holder(view)
     }
 
@@ -61,51 +66,42 @@ class SubRvAdapter(val context: Context, val dogsList: MutableList<Dogs>, privat
         holder!!.bind(this!!.dogsSearchList!![position], context)
     }
 
-
-
-    interface ItemClickListener {
-        fun onItemClicked(item : Dogs) {}
-
-    }
-
-    fun setAddItem(dogs :Dogs ){
-        dogsList.add(dogs)
-        this.dogsSearchList= dogsList
-        notifyDataSetChanged()
-    }
-
     //필터를 위한 코드
-    override fun getFilter() : Filter{
+    override fun getFilter(): Filter {
 
 
-      return  object : Filter(){
-          override fun performFiltering(p0: CharSequence?): FilterResults {
-            val charString = p0.toString()
-              if(charString.isEmpty()){
-                  dogsSearchList = dogsList
-              }else{
-                  val filteredList = ArrayList<Dogs>()
-                  for (row in dogsList) {
-                      if (row.breed!!.toLowerCase().contains(charString.toLowerCase()) || row.gender!!.toLowerCase().contains(charString.toLowerCase())) {
-                          filteredList.add(row)
-                      }
-                  }
-                  dogsSearchList = filteredList
-              }
-              val filterResults = FilterResults()
-              filterResults.values = dogsSearchList
-              return filterResults
-          }
+        return object : Filter() {
+            override fun performFiltering(p0: CharSequence?): FilterResults {
+                val charString = p0.toString()
+                if (charString.isEmpty()) {
+                    dogsSearchList = dogsList
+                } else {
+                    val filteredList = ArrayList<Dog>()
+                    for (row in dogsList) {
+                        if (row.breed!!.toLowerCase().contains(charString.toLowerCase()) || row.gender!!.toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row)
+                        }
+                    }
+                    dogsSearchList = filteredList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = dogsSearchList
+                return filterResults
+            }
 
-          override fun publishResults(p0: CharSequence, p1: FilterResults) {
-              dogsSearchList = p1.values as ArrayList<Dogs>
-              notifyDataSetChanged()
-          }
-
-
-      }
+            override fun publishResults(p0: CharSequence, p1: FilterResults) {
+                dogsSearchList = p1.values as ArrayList<Dog>
+                notifyDataSetChanged()
+            }
 
 
+        }
+    }
+
+    fun setDogsData(dogs: List<Dog>) {
+        this.dogsSearchList = dogs
+        dogsList = dogs.toMutableList()
+        notifyDataSetChanged()
     }
 
 }

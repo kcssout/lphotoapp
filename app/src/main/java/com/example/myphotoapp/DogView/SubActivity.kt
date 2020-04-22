@@ -1,46 +1,32 @@
 package com.example.myphotoapp.DogView
 
+import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.Toolbar
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.myphotoapp.DB.Dog
 import com.example.myphotoapp.DB.DogDB
 import com.example.myphotoapp.R
-import com.example.myphotoapp.ViewModel.DogViewModel
+import com.example.myphotoapp.DB.Dog
+import com.example.myphotoapp.Logger.Logf
+import com.example.myphotoapp.DogView.ViewModel.DogViewModel
 import kotlinx.android.synthetic.main.activity_sub.*
 import java.util.ArrayList
 
-class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener, ViewModelStoreOwner {
+class SubActivity : AppCompatActivity() {
 
-
-    var dogList = arrayListOf<Dogs>(
-            Dogs("Chow Chow", "Male", "4", null),
-            Dogs("Breed Pomeranian", "Female", "1", null),
-            Dogs("Golden Retriver", "Female", "3", null),
-            Dogs("Yorkshire Terrier", "Male", "5", null),
-            Dogs("Pug", "Male", "4", null),
-            Dogs("Alaskan Malamute", "Male", "7", null),
-            Dogs("Shih Tzu", "Female", "5", null)
-    )
-    var itemlist: MutableList<Dogs> = mutableListOf()
+    var itemlist: MutableList<Dog> = mutableListOf()
     var SearchView: SearchView? = null
     var mAdapter: SubRvAdapter? = null
-    private  var dogViewModel: DogViewModel? = null
-
-    private var viewModelFactory : ViewModelProvider.AndroidViewModelFactory? = null
+    private lateinit var dogViewModel: DogViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,16 +34,12 @@ class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener, ViewMod
         val toolbar = toolbar
         val addbtn = addbtn
 
-
         setSupportActionBar(toolbar)
         val ab = supportActionBar!!
         ab.setDisplayShowTitleEnabled(false)
         ab.setDisplayHomeAsUpEnabled(true)
 
-
-
-        itemlist = dogList
-        mAdapter = SubRvAdapter(this, itemlist as ArrayList<Dogs>, this)
+        mAdapter = SubRvAdapter(this, itemlist as ArrayList<Dog>,{dog->},{dog->deleteDialog(dog)})
         mRecyclerView.adapter = mAdapter            //mRecyclerView 아이디 가져와서 연결
 
 
@@ -69,12 +51,30 @@ class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener, ViewMod
         addbtn.setOnClickListener {
             val i = Intent(this, DogAddActivity::class.java)
             startActivity(i)
-
         }
+
+        dogViewModel = ViewModelProvider(this).get(DogViewModel::class.java)
+
+        dogViewModel.getAll().observe(this, Observer<List<Dog>> {
+            //update UI
+            dog-> mAdapter!!.setDogsData(dog)
+            Logf.v("dogViewModel", "test")
+        })
+
 
     }
 
-
+    private fun deleteDialog(dogs : Dog){
+        var builder = AlertDialog.Builder(this)
+        builder.setMessage("삭제할까요?")
+                .setNegativeButton(" 아뇨"){
+                    _,_->
+                }
+                .setPositiveButton("네"){_,_->
+                    dogViewModel.delete(dogs)
+                }
+        builder.show()
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
@@ -114,10 +114,6 @@ class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener, ViewMod
     }
 
 
-    override fun onItemClicked(item: Dogs) {
-        Toast.makeText(this, "Dog > " + item.breed, Toast.LENGTH_SHORT).show()
-    }
-
 
     override fun onDestroy() {
         DogDB.destroyInsatance()
@@ -134,6 +130,8 @@ class SubActivity : AppCompatActivity(), SubRvAdapter.ItemClickListener, ViewMod
                     instance?: SubActivity().also { instance = it }
                 }
     }
+
+
 
 }
 

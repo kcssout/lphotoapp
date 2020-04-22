@@ -1,6 +1,7 @@
-package com.example.myphotoapp.Repository
+package com.example.myphotoapp.DB.Repository
 
 import android.app.Application
+import androidx.lifecycle.LiveData
 import com.example.myphotoapp.DB.Dao.DogDao
 import com.example.myphotoapp.DB.Dog
 import com.example.myphotoapp.DB.DogDB
@@ -9,9 +10,9 @@ class dogRespository(application: Application){
 
     private val dogDatabase = DogDB.getInstance(application)!!
     private val dogDao: DogDao = dogDatabase.dogDao()
-    private val LiveDog: List<Dog> = dogDao.getAll()
+    private val LiveDog: LiveData<List<Dog>> = dogDao.getAll()
 
-    fun getAll(): List<Dog> {
+    fun getAll(): LiveData<List<Dog>> {
         return LiveDog
     }
 
@@ -20,6 +21,6 @@ class dogRespository(application: Application){
     }
 
     fun delete(dog: Dog){
-        dogDao.deleteAll()
+        dogDao.delete(dog)
     }
 }
