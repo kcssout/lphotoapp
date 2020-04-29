@@ -16,8 +16,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 
-import com.example.myphotoapp.DB.JavaDb.DbOpenHelper
-import com.example.myphotoapp.DB.JavaDb.User
+import com.example.myphotoapp.DB.DB.DbOpenHelper
+import com.example.myphotoapp.DB.DB.User
 import com.example.myphotoapp.Logger.Logf
 import kotlinx.android.synthetic.main.edit_detail.*
 

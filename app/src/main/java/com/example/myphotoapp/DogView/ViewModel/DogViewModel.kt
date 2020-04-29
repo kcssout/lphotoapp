@@ -3,7 +3,7 @@ package com.example.myphotoapp.DogView.ViewModel
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
-import com.example.myphotoapp.DB.Dog
+import com.example.myphotoapp.DB.DB.Dog
 import com.example.myphotoapp.DB.Repository.dogRespository
 
 class DogViewModel(application : Application) : AndroidViewModel(application){
@@ -21,5 +21,9 @@ class DogViewModel(application : Application) : AndroidViewModel(application){
 
     fun delete(dog : Dog){
         respository.delete(dog)
+    }
+
+    fun deleteAll(dog : Dog){
+        respository.deleteAll(dog)
     }
 }

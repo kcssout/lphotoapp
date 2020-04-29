@@ -12,8 +12,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 
-import com.example.myphotoapp.DB.JavaDb.DbOpenHelper
-import com.example.myphotoapp.DB.JavaDb.User
+import com.example.myphotoapp.DB.DB.DbOpenHelper
+import com.example.myphotoapp.DB.DB.User
 import com.example.myphotoapp.DogView.SubActivity
 import com.example.myphotoapp.Logger.Logf
 import com.example.myphotoapp.RecyclerView.RecyclerAdapter

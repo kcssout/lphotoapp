@@ -1,14 +1,13 @@
 package com.example.myphotoapp.DogView
 
 import android.content.Context
-import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
-import com.example.myphotoapp.DB.Dog
+import com.example.myphotoapp.DB.DB.Dog
 import com.example.myphotoapp.R
 
 class SubRvAdapter(val context: Context, var dogsList: MutableList<Dog>, val dogItemClick: (Dog) -> Unit, val dogItemLongClick: (Dog) -> Unit) : RecyclerView.Adapter<SubRvAdapter.Holder>(), Filterable {

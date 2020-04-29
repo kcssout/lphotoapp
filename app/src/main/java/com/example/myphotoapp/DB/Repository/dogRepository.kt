@@ -3,8 +3,8 @@ package com.example.myphotoapp.DB.Repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import com.example.myphotoapp.DB.Dao.DogDao
-import com.example.myphotoapp.DB.Dog
-import com.example.myphotoapp.DB.DogDB
+import com.example.myphotoapp.DB.DB.Dog
+import com.example.myphotoapp.DB.DB.DogDB
 
 class dogRespository(application: Application){
 
@@ -22,5 +22,9 @@ class dogRespository(application: Application){
 
     fun delete(dog: Dog){
         dogDao.delete(dog)
+    }
+
+    fun deleteAll(dog : Dog){
+        dogDao.deleteAll()
     }
 }

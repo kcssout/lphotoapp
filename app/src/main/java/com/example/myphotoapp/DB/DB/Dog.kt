@@ -1,4 +1,4 @@
-package com.example.myphotoapp.DB
+package com.example.myphotoapp.DB.DB
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

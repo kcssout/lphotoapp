@@ -2,12 +2,22 @@ package com.example.myphotoapp
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.Application
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import com.example.myphotoapp.Logger.Logf
-import com.vistrav.ask.Ask
+import android.provider.Settings
+import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import java.lang.ref.WeakReference
+import java.util.*
+
 
 class mainApplication : Application() {
 
@@ -17,30 +27,32 @@ class mainApplication : Application() {
 
         ActivityReference.initialize(this)
 
+
     }
 
 
-    object ActivityReference {
+    object ActivityReference : AppCompatActivity() {
 
         private val TAG = "mainApplication"
         private var mTopActivityWeakRef: WeakReference<Activity>? = null
         private var mApplicationWeakRef: WeakReference<Application>? = null
 
-        private val mCallbacks = object : Application.ActivityLifecycleCallbacks {
-            override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
-                Logf.v(TAG, "onActivityCreated " + activity.localClassName)
 
+
+        private val mCallbacks = object : Application.ActivityLifecycleCallbacks {
+
+            override fun onActivityCreated(activity: Activity, bundle: Bundle?) {
+                Log.d(TAG, "onActivityCreated " + activity.localClassName)
                 setTopActivityWeakRef(activity)
             }
 
             override fun onActivityStarted(activity: Activity) {
-                Logf.v(TAG, "onActivityStarted " + activity.localClassName)
-
+                Log.d(TAG, "onActivityStarted " + activity.localClassName)
                 setTopActivityWeakRef(activity)
+
             }
 
             override fun onActivityResumed(activity: Activity) {
-                Logf.v(TAG, "onActivityResumed " + activity.localClassName)
 
                 setTopActivityWeakRef(activity)
 
@@ -50,6 +62,7 @@ class mainApplication : Application() {
             override fun onActivityPaused(activity: Activity) {}
             override fun onActivityStopped(activity: Activity) {}
             override fun onActivitySaveInstanceState(activity: Activity, bundle: Bundle?) {}
+
         }
 
         @JvmStatic
@@ -81,4 +94,5 @@ class mainApplication : Application() {
             return getActivityReference() ?: mApplicationWeakRef?.get() as Context
         }
     }
+
 }

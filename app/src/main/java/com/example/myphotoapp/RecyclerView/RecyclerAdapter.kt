@@ -9,10 +9,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-import com.example.myphotoapp.DB.JavaDb.DbOpenHelper
+import com.example.myphotoapp.DB.DB.DbOpenHelper
 import com.example.myphotoapp.Logger.Logf
 import com.example.myphotoapp.R
-import com.example.myphotoapp.DB.JavaDb.User
+import com.example.myphotoapp.DB.DB.User
 
 import java.util.ArrayList
 

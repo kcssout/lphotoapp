@@ -1,4 +1,4 @@
-package com.example.myphotoapp.DB.JavaDb;
+package com.example.myphotoapp.DB.DB;
 
 import android.content.ContentValues;
 import android.content.Context;

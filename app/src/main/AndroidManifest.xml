@@ -3,8 +3,11 @@
     package="com.example.myphotoapp">
 
 
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <!--위험 권한 / 저장-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />    <!--위험 권한 / 저장-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />          <!--위험 권한 / 전화-->
+    <uses-permission android:name="android.permission.CALL_PHONE" />                <!--위험 권한 / 전화-->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".mainApplication"
