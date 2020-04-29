@@ -44,7 +44,6 @@ class SubActivity : AppCompatActivity() {
 
     private val permissionss = mutableListOf<String>(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.CALL_PHONE, Manifest.permission.CAMERA)
     private val MULTIPLE_PERMISSIONS = 101
-    private var mContext : Context? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +66,7 @@ class SubActivity : AppCompatActivity() {
         ab.setDisplayHomeAsUpEnabled(true)
         ab.setHomeAsUpIndicator(R.drawable.baseline_menu_black_18dp)
 
-        checkPermissions()
+//        checkPermissions()
 
         mAdapter = SubRvAdapter(this, itemlist as ArrayList<Dog>,{ dog->deleteDialog(dog,1)},{ dog->deleteDialog(dog,2)})
         mRecyclerView.adapter = mAdapter            //mRecyclerView 아이디 가져와서 연결
@@ -207,11 +206,13 @@ class SubActivity : AppCompatActivity() {
         if (requestCode == MULTIPLE_PERMISSIONS) {
             //안드로이드 마시멜로 이후 퍼미션 체크.
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                Log.d(TAG, "Dsjkflsdjklfjksldfjsdklf")
                 for (i in grantResults.indices) {
+                    Log.d(TAG, "count "+ grantResults.size)
+
                     if (grantResults[i] == 0) {
+                        Log.d(TAG, " ok i " + i + " // "+ grantResults[i])
                         if (grantResults.size == i + 1) {
-                            Log.d(TAG, " start activity")
+                            Log.d(TAG, " start activity i " + i + " // "+ grantResults[i])
                         }
                     } else {
                         // 거부한 이력이 있으면 true를 반환한다.
