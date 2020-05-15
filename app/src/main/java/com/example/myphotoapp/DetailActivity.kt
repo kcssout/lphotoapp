@@ -36,7 +36,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
     private val ImageUri: Uri? = null
     private val mBitmap: Bitmap? = null
     private var dImage: Drawable? = null
-    private var mMainActivity: MainActivity? = null
+    private var mMainActivity: tempDBActivity? = null
     private var mUserlist: ArrayList<User>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,7 +47,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         dbopen!!.open()
 
         initButton()
-        mMainActivity = MainActivity.getInstance()
+        mMainActivity = tempDBActivity.getInstance()
     }
 
     fun initButton() {
@@ -105,7 +105,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
 
 
                     dbopen!!.close()
-                    MainActivity.getInstance().cycleList(mContext!!)
+                    tempDBActivity.getInstance().cycleList(mContext!!)
 
                 } else {
                     Toast.makeText(this, "데이터가 비어있습니다.", Toast.LENGTH_LONG).show()
@@ -120,6 +120,7 @@ class DetailActivity : AppCompatActivity(), View.OnClickListener {
         Logf.v(TAG, "takeAlbum")
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = MediaStore.Images.Media.CONTENT_TYPE
+
         startActivityForResult(intent, PICK_FROM_ALBUM)
     }
 

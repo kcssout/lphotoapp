@@ -1,7 +1,6 @@
 package com.example.myphotoapp.DogView
 
 import android.Manifest
-import android.app.Activity
 import android.app.AlertDialog
 import android.app.SearchManager
 import android.content.Context
@@ -12,8 +11,10 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -28,9 +29,10 @@ import com.example.myphotoapp.R
 import com.example.myphotoapp.DB.DB.Dog
 import com.example.myphotoapp.Logger.Logf
 import com.example.myphotoapp.DogView.ViewModel.DogViewModel
+import com.example.myphotoapp.Fragment.PageAdapter
 import com.example.myphotoapp.mainApplication
-import com.vistrav.ask.Ask
 import kotlinx.android.synthetic.main.activity_sub.*
+import kotlinx.android.synthetic.main.custom_tab_button.view.*
 import java.util.ArrayList
 
 class SubActivity : AppCompatActivity() {
@@ -49,13 +51,7 @@ class SubActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sub)
-//        Ask.on(this)
-//                .id(INT_ID_OF_YOUR_REQUEST) // in case you are invoking multiple time Ask from same activity or fragment
-//                .forPermissions(Manifest.permission.READ_EXTERNAL_STORAGE
-//                        , Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_PHONE_STATE, Manifest.permission.CAMERA)
-//                .withRationales("Location permission need for map to work properly",
-//                        "In order to save file you will need to grant storage permission") //optional
-//                .go();
+
 
         val toolbar = toolbar
         val addbtn = addbtn
@@ -66,7 +62,6 @@ class SubActivity : AppCompatActivity() {
         ab.setDisplayHomeAsUpEnabled(true)
         ab.setHomeAsUpIndicator(R.drawable.baseline_menu_black_18dp)
 
-//        checkPermissions()
 
         mAdapter = SubRvAdapter(this, itemlist as ArrayList<Dog>,{ dog->deleteDialog(dog,1)},{ dog->deleteDialog(dog,2)})
         mRecyclerView.adapter = mAdapter            //mRecyclerView 아이디 가져와서 연결
@@ -83,7 +78,6 @@ class SubActivity : AppCompatActivity() {
         }
 
 
-
         dogViewModel = ViewModelProvider(this).get(DogViewModel::class.java)
 
         dogViewModel.getAll().observe(this, Observer<List<Dog>> {
@@ -91,8 +85,6 @@ class SubActivity : AppCompatActivity() {
             dog-> mAdapter!!.setDogsData(dog)
             Logf.v("dogViewModel", "test")
         })
-
-
     }
 
     private fun deleteDialog(dogs : Dog, type : Int){
