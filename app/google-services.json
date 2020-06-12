@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "657292470331",
+    "firebase_url": "https://fir-chat-a835a.firebaseio.com",
+    "project_id": "fir-chat-a835a",
+    "storage_bucket": "fir-chat-a835a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:657292470331:android:e48744415d569f930f141e",
+        "android_client_info": {
+          "package_name": "com.example.myphotoapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "657292470331-2ua2m5ggr9npldkot6v6jjutucub2521.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYXpWId78vEqHBEPTdBhXmHk5MosuMjgI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "657292470331-2ua2m5ggr9npldkot6v6jjutucub2521.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

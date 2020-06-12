@@ -11,10 +11,8 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -23,16 +21,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.myphotoapp.Adapter.SubRvAdapter
 import com.example.myphotoapp.BuildConfig
 import com.example.myphotoapp.DB.DB.DogDB
 import com.example.myphotoapp.R
 import com.example.myphotoapp.DB.DB.Dog
 import com.example.myphotoapp.Logger.Logf
 import com.example.myphotoapp.DogView.ViewModel.DogViewModel
-import com.example.myphotoapp.Fragment.PageAdapter
 import com.example.myphotoapp.mainApplication
 import kotlinx.android.synthetic.main.activity_sub.*
-import kotlinx.android.synthetic.main.custom_tab_button.view.*
 import java.util.ArrayList
 
 class SubActivity : AppCompatActivity() {
@@ -63,7 +60,7 @@ class SubActivity : AppCompatActivity() {
         ab.setHomeAsUpIndicator(R.drawable.baseline_menu_black_18dp)
 
 
-        mAdapter = SubRvAdapter(this, itemlist as ArrayList<Dog>,{ dog->deleteDialog(dog,1)},{ dog->deleteDialog(dog,2)})
+        mAdapter = SubRvAdapter(this, itemlist as ArrayList<Dog>, { dog -> deleteDialog(dog, 1) }, { dog -> deleteDialog(dog, 2) })
         mRecyclerView.adapter = mAdapter            //mRecyclerView 아이디 가져와서 연결
 
 

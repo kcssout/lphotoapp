@@ -1,4 +1,4 @@
-package com.example.myphotoapp.DogView
+package com.example.myphotoapp.Adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory

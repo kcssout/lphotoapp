@@ -1,13 +1,10 @@
 package com.example.myphotoapp
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myphotoapp.Fragment.PageAdapter
-import com.example.myphotoapp.Fragment.ScreenSlidePageFragment
-import com.example.myphotoapp.Fragment.SearchSlidePageFragment
 import kotlinx.android.synthetic.main.custom_tab_button.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -55,8 +52,8 @@ class MainActivity : AppCompatActivity(){
 
 
         main_tablayout.getTabAt(0)?.setCustomView(createView("찾기"))
-        main_tablayout.getTabAt(1)?.setCustomView(createView("사진"))
-        main_tablayout.getTabAt(2)?.setCustomView(createView("전화"))
+        main_tablayout.getTabAt(1)?.setCustomView(createView("룩북"))
+        main_tablayout.getTabAt(2)?.setCustomView(createView("채팅"))
 
     }
 

@@ -10,8 +10,7 @@ class PageAdapter(fm: FragmentManager, s: Int) : FragmentPagerAdapter(fm, s) {
 
         when(position){
             0 ->{
-                val searchFragment = SearchSlidePageFragment()
-//                searchFragment.name = "사진dxd"
+                val searchFragment = SearchFragment()
 
                 return searchFragment
             }
@@ -21,9 +20,8 @@ class PageAdapter(fm: FragmentManager, s: Int) : FragmentPagerAdapter(fm, s) {
                 return cameraFragment
             }
             else -> {
-                val callFragment = ScreenSlidePageFragment()
-                callFragment.name = "채팅 창"
-                return callFragment
+                val ChatTitleFragment = ChatTitleFragment()   //ChatFragment()
+                return ChatTitleFragment
             }
         }
     }

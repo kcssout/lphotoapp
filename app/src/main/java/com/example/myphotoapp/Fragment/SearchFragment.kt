@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myphotoapp.DB.DB.Dog
 import com.example.myphotoapp.DB.DB.DogDB
 import com.example.myphotoapp.DogView.DogAddActivity
-import com.example.myphotoapp.DogView.SubRvAdapter
+import com.example.myphotoapp.Adapter.SubRvAdapter
 import com.example.myphotoapp.DogView.ViewModel.DogViewModel
 import com.example.myphotoapp.Logger.Logf
 import com.example.myphotoapp.R
@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_sub.*
 import kotlinx.android.synthetic.main.activity_sub.view.*
 import java.util.ArrayList
 
-class SearchSlidePageFragment : Fragment(){
+class SearchFragment : Fragment(){
 
     val TAG : String = "SearchSlidePageFragment"
     var itemlist: MutableList<Dog> = mutableListOf()
@@ -38,11 +38,11 @@ class SearchSlidePageFragment : Fragment(){
     private val MULTIPLE_PERMISSIONS = 101
     var name=""
 
-    fun newInstance(): SearchSlidePageFragment
+    fun newInstance(): SearchFragment
     {
         val args = Bundle()
 
-        val frag = SearchSlidePageFragment()
+        val frag = SearchFragment()
         frag.arguments = args
 
         return frag
@@ -73,7 +73,7 @@ class SearchSlidePageFragment : Fragment(){
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) { //onCreateView 에 생성하면 addFragment 오류 뜬다... 5/15
-        mAdapter = SubRvAdapter(requireContext(), itemlist as ArrayList<Dog>,{ dog->deleteDialog(dog,1)},{ dog->deleteDialog(dog,2)})
+        mAdapter = SubRvAdapter(requireContext(), itemlist as ArrayList<Dog>, { dog -> deleteDialog(dog, 1) }, { dog -> deleteDialog(dog, 2) })
         mRecyclerView.adapter = mAdapter            //mRecyclerView 아이디 가져와서 연결
 
 

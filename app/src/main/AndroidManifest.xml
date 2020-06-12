@@ -8,7 +8,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />          <!--위험 권한 / 전화-->
     <uses-permission android:name="android.permission.CALL_PHONE" />                <!--위험 권한 / 전화-->
     <uses-permission android:name="android.permission.CAMERA" />
-
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:name=".mainApplication"
         android:icon="@mipmap/ic_launcher"
@@ -25,6 +25,7 @@
         </activity>
         <activity android:name=".DetailActivity"/>
         <activity android:name=".DogView.DogAddActivity"/>
+        <activity android:name=".Fragment.Chatroom"/>
 
     </application>
 
