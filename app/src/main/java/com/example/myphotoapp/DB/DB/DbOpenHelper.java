@@ -35,7 +35,6 @@ public class DbOpenHelper {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(DataBases.CreateDB._CREATE);
-
         }
 
         // 버전이 업데이트 되었을 경우 DB를 다시 만들어 준다.

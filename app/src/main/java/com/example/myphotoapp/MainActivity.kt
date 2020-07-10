@@ -51,9 +51,9 @@ class MainActivity : AppCompatActivity(){
         main_tablayout.setupWithViewPager(main_viewPager) // 탭레이아웃과 뷰페이저를 연동
 
 
-        main_tablayout.getTabAt(0)?.setCustomView(createView("찾기"))
-        main_tablayout.getTabAt(1)?.setCustomView(createView("룩북"))
-        main_tablayout.getTabAt(2)?.setCustomView(createView("채팅"))
+        main_tablayout.getTabAt(0)?.setCustomView(createView("search"))
+        main_tablayout.getTabAt(1)?.setCustomView(createView("look"))
+        main_tablayout.getTabAt(2)?.setCustomView(createView("chat"))
 
     }
 
