@@ -10,18 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myphotoapp.DB.DB.Dog
 import com.example.myphotoapp.R
 
-class SubRvAdapter(val context: Context, var dogsList: MutableList<Dog>, val dogItemClick: (Dog) -> Unit, val dogItemLongClick: (Dog) -> Unit) : RecyclerView.Adapter<SubRvAdapter.Holder>(), Filterable {
+class subRvAdapter(val context: Context, var dogsList: MutableList<Dog>, val dogItemClick: (Dog) -> Unit, val dogItemLongClick: (Dog) -> Unit) : RecyclerView.Adapter<subRvAdapter.Holder>(), Filterable {
 
     private var dogsSearchList: List<Dog>? = null
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {    //holder 생성 itemclick 추가
-        val dogPhoto = itemView!!.findViewById<ImageView>(R.id.dogPhotoImg)
-        val dogBreed = itemView!!.findViewById<TextView>(R.id.dogBreedTv)
-        val dogAge = itemView!!.findViewById<TextView>(R.id.dogAgeTv)
-        val dogGender = itemView!!.findViewById<TextView>(R.id.dogGenderTv)
+        val dogPhoto = itemView.findViewById<ImageView>(R.id.dogPhotoImg)
+        val dogBreed = itemView.findViewById<TextView>(R.id.dogBreedTv)
+        val dogAge = itemView.findViewById<TextView>(R.id.dogAgeTv)
+        val dogGender = itemView.findViewById<TextView>(R.id.dogGenderTv)
 
 
-        fun bind(dogs: Dog, context: Context) {
+        fun bind(dogs: Dog) {
             if (dogs.photo != null) {
                 var bitmap = BitmapFactory.decodeByteArray (dogs.photo, 0, dogs.photo!!.size )
                 dogPhoto?.setImageBitmap(bitmap)
@@ -62,7 +62,7 @@ class SubRvAdapter(val context: Context, var dogsList: MutableList<Dog>, val dog
     }
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder!!.bind(this!!.dogsSearchList!![position], context)
+        holder.bind(this.dogsSearchList!![position])
     }
 
     //필터를 위한 코드
@@ -88,6 +88,7 @@ class SubRvAdapter(val context: Context, var dogsList: MutableList<Dog>, val dog
                 return filterResults
             }
 
+            @Suppress("UNCHECKED_CAST")
             override fun publishResults(p0: CharSequence, p1: FilterResults) {
                 dogsSearchList = p1.values as ArrayList<Dog>
                 notifyDataSetChanged()

@@ -1,4 +1,4 @@
-package com.example.myphotoapp.DogView
+package com.example.myphotoapp
 
 import android.app.Activity
 import android.content.Intent
@@ -10,49 +10,34 @@ import android.os.Bundle
 import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.example.myphotoapp.DB.DB.Dog
-import com.example.myphotoapp.DogView.ViewModel.DogViewModel
 import com.example.myphotoapp.Logger.Logf
-import com.example.myphotoapp.R
-import kotlinx.android.synthetic.main.add_detail_dog.*
-import java.io.ByteArrayOutputStream
+import com.example.myphotoapp.DB.DB.Review
+import com.example.myphotoapp.Review.reViewModel
+import kotlinx.android.synthetic.main.add_review.*
 import java.io.IOException
 
+class AddReviewActivity : AppCompatActivity() {
 
-class DogAddActivity : AppCompatActivity() {
-
-    private lateinit var dogViewModel: DogViewModel
-
-    private var dogDb: DogDB? = null
-    private var dogPhoto: Drawable? = null
+    private lateinit var reviewModel: reViewModel
+    private var reviewPhoto: Drawable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.add_detail_dog)
-        dogDb = DogDB.getInstance(this)
-        dogViewModel = ViewModelProvider(this).get(DogViewModel::class.java)
+        setContentView(R.layout.add_review)
+        reviewModel = ViewModelProvider(this).get(reViewModel::class.java)
 
-
-        btn_phview.setOnClickListener {
-            takeAlbum()
-        }
-
-        btn_confirm.setOnClickListener {
-            insertNewDog()
+        btn_confirm_rv.setOnClickListener {
+            insertNewReview()
         }
     }
 
 
-    fun insertNewDog() {
+    fun insertNewReview() {
+        var review = Review()
+        review.title = etTitle.text.toString()
+        review.content= etContent.text.toString()
+        reviewModel.insert(review)
 
-        val newDog = Dog()
-        newDog.age = etDogAge.text.toString()
-        newDog.breed = etDogName.text.toString()
-        newDog.gender = etDogGender.text.toString()
-        newDog.photo = getByteArrayFromDrawable(dogPhoto)
-
-        dogViewModel.insert(newDog)
-        Logf.v(TAG, newDog.toString())
         finish()
     }
 
@@ -80,8 +65,8 @@ class DogAddActivity : AppCompatActivity() {
                             // Use older version
                             bitmap = MediaStore.Images.Media.getBitmap(contentResolver, extras)
                         }
-                        img_view.setImageBitmap(bitmap)
-                        dogPhoto = BitmapDrawable(resources, bitmap)
+                        img_view2.setImageBitmap(bitmap)
+                        reviewPhoto = BitmapDrawable(resources, bitmap)
                     } catch (e: IOException) {
                         e.printStackTrace()
                     }
@@ -103,26 +88,26 @@ class DogAddActivity : AppCompatActivity() {
     }
 
 
-    fun getByteArrayFromDrawable(d: Drawable?): ByteArray? {
-        var data: ByteArray? = null
-        if (d != null) {
-            val bitmap = (d as BitmapDrawable).bitmap
-
-            val resizedBitmap =  Bitmap.createScaledBitmap(bitmap, bitmap.width/10, bitmap.height/10, true);
-            val stream = ByteArrayOutputStream()
-            resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream) //png로하면 배경색이 투명, Jpg로하면 배경색이 검정
-            data = stream.toByteArray() // blob
-
-            Logf.v(TAG, data.size.toString())
-            return data
-        } else {
-            return data
-        }
-
-    }
+//    fun getByteArrayFromDrawable(d: Drawable?): ByteArray? {
+//        var data: ByteArray? = null
+//        if (d != null) {
+//            val bitmap = (d as BitmapDrawable).bitmap
+//
+//            val resizedBitmap =  Bitmap.createScaledBitmap(bitmap, bitmap.width/10, bitmap.height/10, true);
+//            val stream = ByteArrayOutputStream()
+//            resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream) //png로하면 배경색이 투명, Jpg로하면 배경색이 검정
+//            data = stream.toByteArray() // blob
+//
+//            Logf.v(TAG, data.size.toString())
+//            return data
+//        } else {
+//            return data
+//        }
+//
+//    }
 
     companion object {
-        private val TAG = DogAddActivity::class.java.simpleName
+        private val TAG = AddReviewActivity::class.java.simpleName
         private val PICK_FROM_ALBUM = 0
     }
 }

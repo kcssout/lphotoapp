@@ -11,8 +11,7 @@ import android.provider.MediaStore
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.example.myphotoapp.DB.DB.Card
-import com.example.myphotoapp.DB.DB.Dog
-import com.example.myphotoapp.DB.DB.DogDB
+import com.example.myphotoapp.DogView.DogDB
 import com.example.myphotoapp.DogView.ViewModel.DogViewModel
 import com.example.myphotoapp.Logger.Logf
 import com.example.myphotoapp.R
@@ -21,7 +20,7 @@ import java.io.ByteArrayOutputStream
 import java.io.IOException
 
 
-class CardAddActivity : AppCompatActivity() {
+class cardAddActivity : AppCompatActivity() {
 
     private lateinit var cardViewModel: DogViewModel //card
 
@@ -125,7 +124,7 @@ class CardAddActivity : AppCompatActivity() {
     }
 
     companion object {
-        private val TAG = CardAddActivity::class.java.simpleName
+        private val TAG = cardAddActivity::class.java.simpleName
         private val PICK_FROM_ALBUM = 0
     }
 }

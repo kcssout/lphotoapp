@@ -1,25 +1,47 @@
 package com.example.myphotoapp
 
+import android.app.SearchManager
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
+import com.example.myphotoapp.Adapter.subRvAdapter
 import com.example.myphotoapp.Fragment.PageAdapter
+import com.example.myphotoapp.Fragment.SearchFragment
+import com.example.myphotoapp.RecyclerView.RecyclerAdapter
 import kotlinx.android.synthetic.main.custom_tab_button.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.main_toolbar.*
 
-class MainActivity : AppCompatActivity(){
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var drawer: DrawerLayout
+    private lateinit var toolbar: Toolbar
+    var SearchView: SearchView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.fragment_main)
-
+        setContentView(R.layout.main_include_drawer)
+        drawer = findViewById(R.id.main_drawer_layout) as DrawerLayout //findViewById<View>(R.id.drawer_layout) as DrawerLayout
+        toolbar = findViewById(R.id.toolbar) as Toolbar
         initViewPager()
     }
 
-
     private fun createView(tabName: String): View {
         var tabView = LayoutInflater.from(baseContext).inflate(R.layout.custom_tab_button, null)
+
+        setSupportActionBar(toolbar)
+        val ab = supportActionBar!!
+        ab.setDisplayShowTitleEnabled(false)
+        ab.setDisplayHomeAsUpEnabled(true)
+        ab.setHomeAsUpIndicator(R.drawable.baseline_menu_black_18dp)
 
         tabView.tab_text.text = tabName
         when (tabName) {
@@ -41,10 +63,10 @@ class MainActivity : AppCompatActivity(){
         }
     }
 
-    private fun initViewPager(){
+    private fun initViewPager() {
 
 
-        val adapter = PageAdapter(supportFragmentManager,3) // PageAdapter 생성
+        val adapter = PageAdapter(supportFragmentManager, 3) // PageAdapter 생성
 
 
         main_viewPager.adapter = adapter // 뷰페이저에 adapter 장착
@@ -56,6 +78,44 @@ class MainActivity : AppCompatActivity(){
         main_tablayout.getTabAt(2)?.setCustomView(createView("chat"))
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+
+
+        var searchManager = this.getSystemService(Context.SEARCH_SERVICE) as SearchManager
+        SearchView = menu!!.findItem(R.id.menu_action_search).actionView as SearchView
+        SearchView!!.setSearchableInfo(searchManager.getSearchableInfo((this).componentName))
+        SearchView!!.maxWidth = Integer.MAX_VALUE
+        SearchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                SearchFragment.searchinstance().mAdapter!!.filter.filter(query)
+                return false
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                SearchFragment.searchinstance().mAdapter!!.filter.filter(query)
+                return false
+            }
+        })
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        val id = item.itemId
+
+        if (id == R.id.menu_action_search) {
+            return true;
+        } else if (id == android.R.id.home) {
+
+            drawer.openDrawer(GravityCompat.START) // 네비게이션레이아웃
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item)
+        }
+    }
+
 
 //
 //    private fun checkPermissions() {

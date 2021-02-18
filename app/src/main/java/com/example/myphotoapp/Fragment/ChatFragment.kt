@@ -2,20 +2,15 @@ package com.example.myphotoapp.Fragment
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myphotoapp.Adapter.chatRvAdapter
-import com.example.myphotoapp.DB.DB.chatDb.Chat
+import com.example.myphotoapp.DB.chatDb.Chat
 import com.example.myphotoapp.R
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_chatroom.*
-import kotlinx.android.synthetic.main.activity_chatroom.view.*
 import java.util.*
 
 
@@ -52,7 +47,7 @@ class Chatroom : AppCompatActivity() {
 
         sendbutton.setOnClickListener { view ->
             var chatData = Chat()
-            chatData.uname = userName
+            chatData.name = userName
             chatData.message = editText.text.toString()
 
             var map = HashMap<String, Any>();
@@ -62,7 +57,7 @@ class Chatroom : AppCompatActivity() {
             var root = reference.child(key!!)
             Log.d(TAG, "key : " + key + " , root : " + root)
             val chatMap = HashMap<String, Any>()
-            chatMap.put("name", chatData.uname!!)
+            chatMap.put("name", chatData.name!!)
             chatMap.put("message", chatData.message!!)
             root.updateChildren(chatMap)
 
@@ -92,7 +87,7 @@ class Chatroom : AppCompatActivity() {
                 val chatData: Chat? = db.getValue(Chat::class.java)// chatData를 가져오고
 
                 if (chatData != null) {
-                    Log.d(TAG, "onChildAdded(메시지입력) >> " + chatData.message + ", " + chatData.uname)
+                    Log.d(TAG, "onChildAdded(메시지입력) >> " + chatData.message + ", " + chatData.name)
 
                     mAdapter!!.add(chatData)
                 }

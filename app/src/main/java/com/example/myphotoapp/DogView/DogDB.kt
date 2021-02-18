@@ -1,10 +1,10 @@
-package com.example.myphotoapp.DB.DB
+package com.example.myphotoapp.DogView
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-
+import com.example.myphotoapp.DB.DB.Dog
 import com.example.myphotoapp.DB.Dao.DogDao
 
 @Database(entities = [Dog::class], version = 1, exportSchema = false)

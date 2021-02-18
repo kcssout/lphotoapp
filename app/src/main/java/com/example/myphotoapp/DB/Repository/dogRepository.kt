@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import com.example.myphotoapp.DB.Dao.DogDao
 import com.example.myphotoapp.DB.DB.Dog
-import com.example.myphotoapp.DB.DB.DogDB
+import com.example.myphotoapp.DogView.DogDB
 
 class dogRespository(application: Application){
 

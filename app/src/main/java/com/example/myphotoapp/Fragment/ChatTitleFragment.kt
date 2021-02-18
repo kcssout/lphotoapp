@@ -7,9 +7,12 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -24,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.squareup.picasso.Picasso
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.activity_chatroomlist.view.*
+import kotlinx.android.synthetic.main.chat_enter.*
 import kotlinx.android.synthetic.main.chat_enter.view.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -48,6 +52,7 @@ class ChatTitleFragment : Fragment() {
     var etName : EditText? = null
     var ivProfile : CircleImageView? = null
     var imgUri : Uri? = null
+    var enterBtn : Button? = null
 
     fun newInstance(): ChatTitleFragment {
         val args = Bundle()
@@ -72,6 +77,7 @@ class ChatTitleFragment : Fragment() {
 
         etName = view.et_name
         ivProfile = view.iv_profile
+        enterBtn= view.enterBtn
 
         loadData();
         if(G.nickName!=null){
@@ -83,10 +89,23 @@ class ChatTitleFragment : Fragment() {
 
         }
 
+        enterBtn!!.setOnClickListener {
+            Log.d(TAG, "왜안돼1 "+ isChanged +  isFirst)
+            //ChatActivity로 전환
+            var intent= Intent(context, ChatActivity::class.java)
+            startActivity(intent);
+            if(!isChanged && !isFirst){
+                Log.d(TAG, "왜안돼")
 
-        var chatroomview = view.rv_chattingroom
-        var createbutton = view.bt_create
-        var editTitle = view.et_ChatRoomTitle
+
+            }else{
+                saveData();
+            }
+        }
+
+//        var chatroomview = view.rv_chattingroom
+//        var createbutton = view.bt_create
+//        var editTitle = view.et_ChatRoomTitle
 
 //        mAdapter = roomRvAdapter(requireContext(), chatroomList)
 //        chatroomview.adapter = mAdapter
@@ -132,6 +151,7 @@ class ChatTitleFragment : Fragment() {
     }
 
     fun clickImage(view : View?){
+
         var intent = Intent(Intent.ACTION_PICK)
         intent.setType("image/*")
         startActivityForResult(intent, 10)
@@ -149,18 +169,6 @@ class ChatTitleFragment : Fragment() {
                 }
         }
     }
-
-    fun clickBtn(view : View){
-        if(!isChanged && !isFirst){
-             //ChatActivity로 전환
-            var intent= Intent(context, ChatActivity::class.java)
-            startActivity(intent);
-
-        }else{
-            saveData();
-        }
-    }
-
     fun saveData(){
         G.nickName = etName!!.text.toString()
 
