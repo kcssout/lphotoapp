@@ -37,7 +37,6 @@
         <EditText
             android:id="@+id/content_et"
             android:layout_width="0dp"
-            android:background="@drawable/back_et_name"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:padding="8dp"

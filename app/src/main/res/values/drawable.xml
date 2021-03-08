@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="setting">@drawable/baseline_app_settings_alt_black_24</drawable>
+    <drawable name="chat">@drawable/baseline_chat_black_24</drawable>
+    <drawable name="look">@drawable/baseline_photo_camera_black_24</drawable>
+    <drawable name="search">@drawable/baseline_image_search_black_24</drawable>
+    <drawable name="love">@drawable/baseline_favorite_border_black_48</drawable>
+
+</resources>

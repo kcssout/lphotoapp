@@ -19,16 +19,20 @@ class PageAdapter(fm: FragmentManager, s: Int) : FragmentPagerAdapter(fm, s) {
                 cameraFragment.name = "정보 창"
                 return cameraFragment
             }
-            else -> {
+            2 ->{
                 val ChatTitleFragment = ChatTitleFragment()   //ChatFragment()
                 return ChatTitleFragment
+            }
+            else -> {
+                val settingFragment = SettingFragment()   //ChatFragment()
+                return settingFragment
             }
         }
     }
 
 
     override fun getCount(): Int {
-        return 3
+        return 4
     }
 
 

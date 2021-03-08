@@ -3,25 +3,21 @@ package com.example.myphotoapp
 import android.app.SearchManager
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
+import android.util.Log
+import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.myphotoapp.Adapter.subRvAdapter
 import com.example.myphotoapp.Fragment.PageAdapter
 import com.example.myphotoapp.Fragment.SearchFragment
-import com.example.myphotoapp.RecyclerView.RecyclerAdapter
 import kotlinx.android.synthetic.main.custom_tab_button.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.main_toolbar.*
 
 class MainActivity : AppCompatActivity() {
 
+    private var TAG : String = MainActivity::class.java.simpleName
     private lateinit var drawer: DrawerLayout
     private lateinit var toolbar: Toolbar
     var SearchView: SearchView? = null
@@ -34,6 +30,8 @@ class MainActivity : AppCompatActivity() {
         initViewPager()
     }
 
+
+
     private fun createView(tabName: String): View {
         var tabView = LayoutInflater.from(baseContext).inflate(R.layout.custom_tab_button, null)
 
@@ -44,17 +42,23 @@ class MainActivity : AppCompatActivity() {
         ab.setHomeAsUpIndicator(R.drawable.baseline_menu_black_18dp)
 
         tabView.tab_text.text = tabName
+
+        Log.d(TAG,"tabview " + tabName)
         when (tabName) {
-            "사진" -> {
-                tabView.tab_logo.setImageResource(android.R.drawable.ic_menu_search)
+            "search" -> {
+                tabView.tab_logo.setImageResource(R.drawable.search)
                 return tabView
             }
-            "정보" -> {
-                tabView.tab_logo.setImageResource(android.R.drawable.ic_menu_camera)
+            "look" -> {
+                tabView.tab_logo.setImageResource(R.drawable.look)
                 return tabView
             }
-            "채팅" -> {
-                tabView.tab_logo.setImageResource(android.R.drawable.ic_menu_call)
+            "chat" -> {
+                tabView.tab_logo.setImageResource(R.drawable.chat)
+                return tabView
+            }
+            "setting" -> {
+                tabView.tab_logo.setImageResource(R.drawable.setting)
                 return tabView
             }
             else -> {
@@ -64,24 +68,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initViewPager() {
-
-
-        val adapter = PageAdapter(supportFragmentManager, 3) // PageAdapter 생성
-
-
+        val adapter = PageAdapter(supportFragmentManager, 4) // PageAdapter 생성
         main_viewPager.adapter = adapter // 뷰페이저에 adapter 장착
         main_tablayout.setupWithViewPager(main_viewPager) // 탭레이아웃과 뷰페이저를 연동
-
-
         main_tablayout.getTabAt(0)?.setCustomView(createView("search"))
         main_tablayout.getTabAt(1)?.setCustomView(createView("look"))
         main_tablayout.getTabAt(2)?.setCustomView(createView("chat"))
+        main_tablayout.getTabAt(3)?.setCustomView(createView("setting"))
 
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        getMenuInflater().inflate(R.menu.menu_search, menu);
-
+        getMenuInflater().inflate(R.menu.menu_search, menu); //이거없으면 null에러
 
         var searchManager = this.getSystemService(Context.SEARCH_SERVICE) as SearchManager
         SearchView = menu!!.findItem(R.id.menu_action_search).actionView as SearchView
@@ -89,12 +87,12 @@ class MainActivity : AppCompatActivity() {
         SearchView!!.maxWidth = Integer.MAX_VALUE
         SearchView!!.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                SearchFragment.searchinstance().mAdapter!!.filter.filter(query)
+                SearchFragment.searchinstance()!!.mAdapter!!.filter.filter(query)
                 return false
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                SearchFragment.searchinstance().mAdapter!!.filter.filter(query)
+                SearchFragment.searchinstance()!!.mAdapter!!.filter.filter(query)
                 return false
             }
         })

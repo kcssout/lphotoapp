@@ -27,6 +27,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/love"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/love"
+                android:layout_margin="5dp">
+
+
+            </ImageView>
+
             <TextView
                 android:id="@+id/c_like"
                 android:layout_width="20dp"

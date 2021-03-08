@@ -7,6 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.RequestBuilder
+import com.bumptech.glide.request.RequestOptions
 import com.example.myphotoapp.DB.DB.Dog
 import com.example.myphotoapp.R
 
@@ -24,7 +27,9 @@ class subRvAdapter(val context: Context, var dogsList: MutableList<Dog>, val dog
         fun bind(dogs: Dog) {
             if (dogs.photo != null) {
                 var bitmap = BitmapFactory.decodeByteArray (dogs.photo, 0, dogs.photo!!.size )
-                dogPhoto?.setImageBitmap(bitmap)
+//                dogPhoto?.setImageBitmap(bitmap)
+
+                Glide.with(context).load(bitmap).apply(RequestOptions.circleCropTransform()).into(dogPhoto)
             } else {
                 dogPhoto?.setImageResource(R.mipmap.ic_launcher)
             }
@@ -42,7 +47,6 @@ class subRvAdapter(val context: Context, var dogsList: MutableList<Dog>, val dog
                 dogItemLongClick(dogs)
                 true
             }
-
         }
 
     }
@@ -54,6 +58,8 @@ class subRvAdapter(val context: Context, var dogsList: MutableList<Dog>, val dog
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(context).inflate(R.layout.sub_rv_item, parent, false)
+
+
         return Holder(view)
     }
 

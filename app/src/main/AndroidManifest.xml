@@ -24,6 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DogView.DogAddActivity"/>
+        <activity android:name=".Fragment.testactivity"/>
         <activity android:name=".Fragment.Chatroom"/>
         <activity android:name=".Fragment.ChatActivity"/>
         <activity android:name=".AddReviewActivity"/>
