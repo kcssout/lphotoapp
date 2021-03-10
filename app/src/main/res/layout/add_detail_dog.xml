@@ -75,36 +75,10 @@
             android:layout_weight="5"/>
     </LinearLayout>
 
-    <LinearLayout
+    <include layout="@layout/viewpage"
+        android:id="@+id/viewpage"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        >
-        <TextView
-            android:id="@+id/tvDogPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="포토"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center"
-            />
-        <EditText
-            android:layout_toRightOf="@id/tvDogPhoto"
-            android:id="@+id/etDogPhoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:layout_weight="5"/>
-    </LinearLayout>
-
-
-    <ImageView
-        android:id="@+id/img_view"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="10dp"
-        />
+        android:layout_height="250dp" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

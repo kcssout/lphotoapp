@@ -82,7 +82,7 @@ class cardAddActivity : AppCompatActivity() {
                             // Use older version
                             bitmap = MediaStore.Images.Media.getBitmap(contentResolver, extras)
                         }
-                        img_view.setImageBitmap(bitmap)
+//                        img_view.setImageBitmap(bitmap)
                         cardPhoto = BitmapDrawable(resources, bitmap)
                     } catch (e: IOException) {
                         e.printStackTrace()

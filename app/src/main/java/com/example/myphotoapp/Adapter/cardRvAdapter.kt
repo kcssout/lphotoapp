@@ -1,5 +1,6 @@
 package com.example.myphotoapp.Adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -13,12 +14,14 @@ import com.example.myphotoapp.DB.DB.Review
 class cardRvAdapter(val context: Context, var revList: MutableList<Review>) : RecyclerView.Adapter<cardRvAdapter.Holder>() {
 
     private var reviewList: List<Review>? = null
+    private var check_love : Boolean= false;
 
     inner class Holder(itemView: View) : RecyclerView.ViewHolder(itemView) {    //holder 생성 itemclick 추가
         val title = itemView.findViewById<TextView>(R.id.c_title)
         val like = itemView.findViewById<TextView>(R.id.c_like)
         val image = itemView.findViewById<ImageView>(R.id.c_image)
         val reply = itemView.findViewById<TextView>(R.id.c_reply)
+        val love = itemView.findViewById<ImageView>(R.id.love)
 
 
 
@@ -36,6 +39,18 @@ class cardRvAdapter(val context: Context, var revList: MutableList<Review>) : Re
             title?.text = reviews.title
             like?.text = reviews.like.toString()
             reply?.text = reviews.content
+
+
+            love.setOnClickListener {
+                view: View? ->
+                if(!check_love){
+                    view!!.setBackgroundResource(R.drawable.filllove)
+                    check_love=true;
+                }else{
+                    check_love=false;
+                    view!!.setBackgroundResource(R.drawable.love)
+                }
+            }
 
 //            itemView.setOnClickListener {
 //                dogItemClick(dogs)

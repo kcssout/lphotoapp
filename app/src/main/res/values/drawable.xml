@@ -5,5 +5,6 @@
     <drawable name="look">@drawable/baseline_photo_camera_black_24</drawable>
     <drawable name="search">@drawable/baseline_image_search_black_24</drawable>
     <drawable name="love">@drawable/baseline_favorite_border_black_48</drawable>
+    <drawable name="filllove">@drawable/baseline_favorite_black_48</drawable>
 
 </resources>

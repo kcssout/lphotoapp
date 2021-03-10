@@ -48,7 +48,6 @@ class SearchFragment : Fragment() {
 
     fun newInstance(): SearchFragment {
         val args = Bundle()
-
         val frag = SearchFragment()
         frag.arguments = args
 
@@ -125,7 +124,7 @@ class SearchFragment : Fragment() {
                 android.R.color.holo_red_light,
                 object : SwipeHelper.UnderlayButtonClickListener {
                     override fun onClick() {
-                        Toast.makeText(mContext,"Deleted item $position",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(mContext,"Deleted photo_item $position",Toast.LENGTH_SHORT).show()
                     }
                 })
     }
