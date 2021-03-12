@@ -10,27 +10,35 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.graphics.drawable.toBitmap
 import androidx.lifecycle.ViewModelProvider
 import com.example.myphotoapp.DB.DB.Dog
 import com.example.myphotoapp.DogView.ViewModel.DogViewModel
 import com.example.myphotoapp.Logger.Logf
 import com.example.myphotoapp.R
+import com.google.firebase.storage.FirebaseStorage
 import kotlinx.android.synthetic.main.add_detail_dog.*
 import kotlinx.android.synthetic.main.viewpage.*
 import java.io.ByteArrayOutputStream
 import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class DogAddActivity : AppCompatActivity() {
 
     private lateinit var dogViewModel: DogViewModel
 
+    private var firebaseStorage : FirebaseStorage = FirebaseStorage.getInstance()
+
     private var dogDb: DogDB? = null
     private var dogPhoto: ArrayList<Drawable>? = null
     private var filelist : ArrayList<Bitmap>? = null
+    private var filelist2 : ArrayList<FileInfo>? = null
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,16 +60,24 @@ class DogAddActivity : AppCompatActivity() {
 
 
     fun insertNewDog() {
+        val sdf = SimpleDateFormat("yyyyMMddhhmmss")
+        var ext = "" // 확장자 따오기
+        var filename = sdf.format( Date()) + ext
+        val imgRef = firebaseStorage.getReference("uploads/$filename")
+
 
         val newDog = Dog()
         newDog.age = etDogAge.text.toString()
         newDog.breed = etDogName.text.toString()
         newDog.gender = etDogGender.text.toString()
-        newDog.photo = getByteArrayFromDrawable(dogPhoto)
+        newDog.photo = getByteArrayFromDrawable(dogPhoto) //하나만
 
 
         dogViewModel.insert(newDog)
-        Logf.v(TAG, newDog.toString())
+        Logf.v(TAG, "insert > "+ newDog.toString())
+
+//        var uploadTask = imgRef.putFile(uri)
+//        uploadTask.addOnSuccessListener { Toast.makeText(this@DogAddActivity, "success upload", Toast.LENGTH_SHORT).show() }
         finish()
     }
 
@@ -75,21 +91,30 @@ class DogAddActivity : AppCompatActivity() {
             PICK_FROM_ALBUM -> {
                 Logf.v(TAG, "PICK_FROM_ALBUM")
                 filelist = ArrayList<Bitmap>()
+                filelist2 = ArrayList<FileInfo>()
+
+
 
                 val extras = data!!.data
-//                Logf.v(TAG, extras!!.toString())
+                Logf.v(TAG, data.data.toString())
 
                 var bitmap: Bitmap? = null
-                if (extras != null) {
+                if (data != null) {
 
                     if(data.clipData== null){
                         Log.v(TAG, "1. 하나만 선택 > "+ data.data);// 멀티 선택을 지원하지 않는 기기에서는 getClipdata()가 없음 => getData()로 접근해야 함
+                        var strFile = data.data
+
+
+                        print(strFile!!.path+ " " + strFile!!.lastPathSegment)
+                        Log.v(TAG,strFile!!.path+ " " + strFile!!.lastPathSegment)
+
 
                         filelist!!.add(makebitmap(data.data!!))
                     }else{
                         var clipData = data.clipData
                         Log.v(TAG, "다중 선택 > " + data.clipData!!.itemCount)
-                        if(clipData!!.itemCount >10){
+                        if(clipData!!.itemCount >5){
                             Toast.makeText(applicationContext,"10개까지만 선택이 가능합니다.",Toast.LENGTH_SHORT).show()
                             return;
                         }
@@ -98,9 +123,14 @@ class DogAddActivity : AppCompatActivity() {
                             var dataStr = (clipData.getItemAt(0).getUri());
                             Log.i("2. clipdata choice", dataStr.toString());
                             Log.i("2. single choice", clipData.getItemAt(0).getUri().getPath());
+
+
+                            Log.v(TAG,dataStr!!.path+ " " + dataStr!!.lastPathSegment) //파일 경로(/-1/1/content://media/external/images/media/589/ORIGINAL/NONE/image/jpeg/1009162339), 이름
+
+
                             filelist!!.add(makebitmap(dataStr));
 
-                        } else if (clipData.getItemCount() > 1 && clipData.getItemCount() < 10) {
+                        } else if (clipData.getItemCount() > 1 && clipData.getItemCount() < 5) {
                             for (i in 0 until clipData.itemCount) {
                                 var dataStr = clipData.getItemAt(i).getUri();
                                 Log.i("3. single choice", dataStr.toString());
@@ -109,7 +139,6 @@ class DogAddActivity : AppCompatActivity() {
                         }
                     }
 
-                    viewPager!!.adapter = ViewPagerAdapter(this,filelist)
 
 
 
@@ -122,6 +151,9 @@ class DogAddActivity : AppCompatActivity() {
             else -> {
             }
         }
+
+        viewPager!!.adapter = ViewPagerAdapter(this,filelist)
+
     }
 
     fun takeAlbum() {
@@ -133,6 +165,7 @@ class DogAddActivity : AppCompatActivity() {
     }
 
     fun makebitmap(uri : Uri) : Bitmap{
+        dogPhoto = arrayListOf()
         var bitmap:Bitmap? =null
         try {
             if (android.os.Build.VERSION.SDK_INT >= 29) {
@@ -153,18 +186,26 @@ class DogAddActivity : AppCompatActivity() {
     }
 
 
-    fun getByteArrayFromDrawable(d: ArrayList<Drawable>?): ArrayList<ByteArray>? {
-        var data: ArrayList<ByteArray>? = null
+    fun getByteArrayFromDrawable(d: ArrayList<Drawable>?): ByteArray? {
+//        var data: ArrayList<ByteArray>? = null //다중 이미지 고려
+        var data: ByteArray? = null
 
-        while(!d!!.isEmpty()){
-            val bitmap = (d as BitmapDrawable).bitmap
+
+        var drawIterator = d!!.iterator()
+        while(drawIterator.hasNext()){
+            val bitmap = drawIterator.next().toBitmap()
+
 
             val resizedBitmap =  Bitmap.createScaledBitmap(bitmap, bitmap.width/10, bitmap.height/10, true);
             val stream = ByteArrayOutputStream()
             resizedBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream) //png로하면 배경색이 투명, Jpg로하면 배경색이 검정
-            data!!.add(stream.toByteArray()) // blob
+            var strbyte = String(stream.toByteArray())
+//            data!!.add(stream.toByteArray()) // blob
 
+            data = stream.toByteArray()
+            Log.d(TAG, "띵띵띵")
         }
+
         Logf.v(TAG, data!!.size.toString())
         return data;
     }

@@ -93,7 +93,7 @@ class SearchFragment : Fragment() {
             //update UI
             dog ->
             mAdapter!!.setDogsData(dog)
-            Logf.v("dogViewModel", "test")
+            Logf.v("dogViewModel", "test LOADING")
         })
         val itemTouchHelper = ItemTouchHelper(object : SwipeHelper(mRecyclerView) {
             override fun instantiateUnderlayButton(position: Int): List<UnderlayButton> {

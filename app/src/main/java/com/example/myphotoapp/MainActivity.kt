@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun createView(tabName: String): View {
         var tabView = LayoutInflater.from(baseContext).inflate(R.layout.custom_tab_button, null)
 
@@ -113,6 +112,7 @@ class MainActivity : AppCompatActivity() {
             return super.onOptionsItemSelected(item)
         }
     }
+
 
 
 //

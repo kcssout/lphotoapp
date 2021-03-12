@@ -2,6 +2,7 @@ package com.example.myphotoapp.Adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,17 @@ class subRvAdapter(val context: Context, var dogsList: MutableList<Dog>, val dog
 
 
         fun bind(dogs: Dog) {
+
+
+
             if (dogs.photo != null) {
+//                var numbersIterator = dogs!!.photo!!.iterator()
+//
+//                while(numbersIterator.hasNext()){
+//                    print(numbersIterator.next())
+//                }
+
+
                 var bitmap = BitmapFactory.decodeByteArray (dogs.photo, 0, dogs.photo!!.size )
 //                dogPhoto?.setImageBitmap(bitmap)
 
