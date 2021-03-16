@@ -61,9 +61,20 @@ class DogAddActivity : AppCompatActivity() {
 
     fun insertNewDog() {
         val sdf = SimpleDateFormat("yyyyMMddhhmmss")
-        var ext = "" // 확장자 따오기
-        var filename = sdf.format( Date()) + ext
+        var file = filelist2!!.get(0)   //일단 하나만 storage에 저장
+        var filename = sdf.format( Date()) + "_" +file.filename + "."+file.ext
         val imgRef = firebaseStorage.getReference("uploads/$filename")
+
+        var uploadTask = imgRef.putFile(file.uri);
+
+        uploadTask.
+                addOnFailureListener{
+                    Log.v(TAG, "실패")
+                }
+                .addOnSuccessListener {
+                    taskSnapshot ->  Toast.makeText(applicationContext," success", Toast.LENGTH_SHORT).show()
+                    Log.v(TAG, "성공")
+                }
 
 
         val newDog = Dog()
@@ -75,9 +86,6 @@ class DogAddActivity : AppCompatActivity() {
 
         dogViewModel.insert(newDog)
         Logf.v(TAG, "insert > "+ newDog.toString())
-
-//        var uploadTask = imgRef.putFile(uri)
-//        uploadTask.addOnSuccessListener { Toast.makeText(this@DogAddActivity, "success upload", Toast.LENGTH_SHORT).show() }
         finish()
     }
 
@@ -91,7 +99,7 @@ class DogAddActivity : AppCompatActivity() {
             PICK_FROM_ALBUM -> {
                 Logf.v(TAG, "PICK_FROM_ALBUM")
                 filelist = ArrayList<Bitmap>()
-                filelist2 = ArrayList<FileInfo>()
+                filelist2 = ArrayList<FileInfo>() // 파일 정보클래스 리스트로 저장
 
 
 
@@ -107,8 +115,7 @@ class DogAddActivity : AppCompatActivity() {
 
 
                         print(strFile!!.path+ " " + strFile!!.lastPathSegment)
-                        Log.v(TAG,strFile!!.path+ " " + strFile!!.lastPathSegment)
-
+                        Log.v(TAG,strFile!!.path+ " " + strFile!!.lastPathSegment + " "+ strFile.encodedPath)
 
                         filelist!!.add(makebitmap(data.data!!))
                     }else{
@@ -121,13 +128,20 @@ class DogAddActivity : AppCompatActivity() {
                         // 멀티 선택에서 하나만 선택했을 경우
                         else if (clipData.itemCount == 1) {
                             var dataStr = (clipData.getItemAt(0).getUri());
-                            Log.i("2. clipdata choice", dataStr.toString());
+                            Log.i("2. dclipdata choice", dataStr.toString());
                             Log.i("2. single choice", clipData.getItemAt(0).getUri().getPath());
 
-
+                            var extSplit = clipData.getItemAt(0).getUri().getPath();
                             Log.v(TAG,dataStr!!.path+ " " + dataStr!!.lastPathSegment) //파일 경로(/-1/1/content://media/external/images/media/589/ORIGINAL/NONE/image/jpeg/1009162339), 이름
+                            var extList : List<String>? = null
+                            if(extSplit.toString().contains("content://")){
+                                extList = extSplit.toString().split(("/"))
+                                Log.v(TAG, "ext확장자 > " + extList[extList.lastIndex-1])
+                            }
 
+                            var fileif = FileInfo(dataStr!!.lastPathSegment, extList!![extList!!.lastIndex -1],dataStr,makebitmap(dataStr))
 
+                            filelist2!!.add(fileif)
                             filelist!!.add(makebitmap(dataStr));
 
                         } else if (clipData.getItemCount() > 1 && clipData.getItemCount() < 5) {
