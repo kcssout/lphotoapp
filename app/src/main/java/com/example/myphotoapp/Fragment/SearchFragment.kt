@@ -93,6 +93,7 @@ class SearchFragment : Fragment() {
             //update UI
             dog ->
             mAdapter!!.setDogsData(dog)
+            itemlist = dog as MutableList<Dog>
             Logf.v("dogViewModel", "test LOADING")
         })
         val itemTouchHelper = ItemTouchHelper(object : SwipeHelper(mRecyclerView) {
@@ -124,6 +125,7 @@ class SearchFragment : Fragment() {
                 android.R.color.holo_red_light,
                 object : SwipeHelper.UnderlayButtonClickListener {
                     override fun onClick() {
+                        dogViewModel.delete(itemlist.get(position))
                         Toast.makeText(mContext,"Deleted photo_item $position",Toast.LENGTH_SHORT).show()
                     }
                 })

@@ -23,6 +23,7 @@ class DogViewModel(application : Application) : AndroidViewModel(application){
         respository.delete(dog)
     }
 
+
     fun deleteAll(dog : Dog){
         respository.deleteAll(dog)
     }

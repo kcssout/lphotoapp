@@ -47,6 +47,8 @@ class DogAddActivity : AppCompatActivity() {
         dogDb = DogDB.getInstance(this)
         dogViewModel = ViewModelProvider(this).get(DogViewModel::class.java)
 
+        dogPhoto = arrayListOf()    //임시 저장파일
+        filelist2 = ArrayList<FileInfo>() // 파일 정보클래스 리스트로 저장
 
 
         btn_phview.setOnClickListener {
@@ -60,32 +62,42 @@ class DogAddActivity : AppCompatActivity() {
 
 
     fun insertNewDog() {
-        val sdf = SimpleDateFormat("yyyyMMddhhmmss")
-        var file = filelist2!!.get(0)   //일단 하나만 storage에 저장
-        var filename = sdf.format( Date()) + "_" +file.filename + "."+file.ext
-        val imgRef = firebaseStorage.getReference("uploads/$filename")
-
-        var uploadTask = imgRef.putFile(file.uri);
-
-        uploadTask.
-                addOnFailureListener{
-                    Log.v(TAG, "실패")
-                }
-                .addOnSuccessListener {
-                    taskSnapshot ->  Toast.makeText(applicationContext," success", Toast.LENGTH_SHORT).show()
-                    Log.v(TAG, "성공")
-                }
-
 
         val newDog = Dog()
         newDog.age = etDogAge.text.toString()
         newDog.breed = etDogName.text.toString()
         newDog.gender = etDogGender.text.toString()
-        newDog.photo = getByteArrayFromDrawable(dogPhoto) //하나만
+        if(dogPhoto!!.isNotEmpty()){
+            newDog.photo = getByteArrayFromDrawable(dogPhoto) //하나만
+        }else{
+            newDog.photo = null //하나만
+
+        }
 
 
         dogViewModel.insert(newDog)
+        if(!filelist2!!.isEmpty()){
+            val sdf = SimpleDateFormat("yyyyMMddhhmmss")
+            var file = filelist2!!.get(0)   //일단 하나만 storage에 저장
+            var filename = sdf.format( Date()) + "_" +file.filename + "."+file.ext
+            val imgRef = firebaseStorage.getReference("uploads/$filename")
+
+            var uploadTask = imgRef.putFile(file.uri);
+
+            uploadTask.
+                    addOnFailureListener{
+                        Log.v(TAG, "실패")
+                    }
+                    .addOnSuccessListener {
+                        taskSnapshot ->  Toast.makeText(applicationContext," success", Toast.LENGTH_SHORT).show()
+                        Log.v(TAG, "성공")
+                    }
+
+
+        }
+
         Logf.v(TAG, "insert > "+ newDog.toString())
+
         finish()
     }
 
@@ -99,7 +111,6 @@ class DogAddActivity : AppCompatActivity() {
             PICK_FROM_ALBUM -> {
                 Logf.v(TAG, "PICK_FROM_ALBUM")
                 filelist = ArrayList<Bitmap>()
-                filelist2 = ArrayList<FileInfo>() // 파일 정보클래스 리스트로 저장
 
 
 
@@ -179,7 +190,6 @@ class DogAddActivity : AppCompatActivity() {
     }
 
     fun makebitmap(uri : Uri) : Bitmap{
-        dogPhoto = arrayListOf()
         var bitmap:Bitmap? =null
         try {
             if (android.os.Build.VERSION.SDK_INT >= 29) {

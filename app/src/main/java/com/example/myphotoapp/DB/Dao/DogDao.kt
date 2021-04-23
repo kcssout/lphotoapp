@@ -19,7 +19,12 @@ interface DogDao {
     @Query("Delete from dog")
     fun deleteAll()
 
+    @Query("Delete from dog where id= id")
+    fun deleteNum()
+
     @Delete
     fun delete(dogs : Dog)
+
+
 
 }

@@ -2,6 +2,7 @@ package com.example.myphotoapp
 
 import android.app.SearchManager
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -14,6 +15,7 @@ import com.example.myphotoapp.Fragment.PageAdapter
 import com.example.myphotoapp.Fragment.SearchFragment
 import kotlinx.android.synthetic.main.custom_tab_button.view.*
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.main_drawer_header_logged_in.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -27,6 +29,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.main_include_drawer)
         drawer = findViewById(R.id.main_drawer_layout) as DrawerLayout //findViewById<View>(R.id.drawer_layout) as DrawerLayout
         toolbar = findViewById(R.id.toolbar) as Toolbar
+
+        login_txt.setOnClickListener {
+            Log.d(TAG,"go LoginActivity")
+            var go = Intent(applicationContext , LoginActivity::class.java)
+            startActivity(go)
+        }
         initViewPager()
     }
 
